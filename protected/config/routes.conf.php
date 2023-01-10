@@ -310,7 +310,7 @@ $route['*']['/vehiculos_propietario/save'] = array('VehiculosPropietarioControll
 $route['*']['/vehiculos_propietario/validar'] = array('VehiculosPropietarioController', 'validar');
 
 $route['*']['/vehiculos_propietario/getitems'] = array('VehiculosPropietarioController', 'insert');
-$route['*']['/vehiculos_propietario/validarConductores'] = array('VehiculosController', 'validarConductor');
+$route['*']['/vehiculos_propietario/validarConductores'] = array('VehiculosPropietarioController', 'validarConductor');
 $route['*']['/vehiculos_propietario/load'] = array('VehiculosPropietarioController', 'load');
 $route['*']['/vehiculos_propietario/delete'] = array('VehiculosPropietarioController', 'delete');
 $route['*']['/vehiculos_propietario/clean'] = array('VehiculosPropietarioController', 'clean');
@@ -530,5 +530,8 @@ $route['*']['/pasajeros/remove'] = array('PasajerosController', 'remove');
 
 
 $route['*']['/checklist'] = array('ChecklistController', 'index');
-
+$route['*']['/checklist/add'] = array('ChecklistController', 'add');
+$route['*']['/checklist/last'] = array('ChecklistController', 'lastCheck');
+$route['*']['/checklist/save'] = array('ChecklistController', 'save');
+$route['*']['/checklist/report/:pindex'] = array('ChecklistController', 'report');
 

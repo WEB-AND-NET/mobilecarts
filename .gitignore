@@ -1,2 +1,8 @@
 #Ignore database config
 protected/config/db.conf.php
+
+#Ignore config common
+protected/config/common.conf.php
+
+#Ignore config strings
+protected/config/strings.conf.php

@@ -69,9 +69,12 @@ $patch = $data['rootUrl'];
                         <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span>
                         <select name="tipo" id="tipo" class="form-control select">
                             <option value="A">Administrador</option>
-                            <option value="P">Propietario</option>
-                            <option value="C">Cliente</option>
+                            <option value="D">Conductor</option>
                             <option value="CO">Contacto</option>
+                            <option value="C">Cliente</option>
+                            <option value="P">Propietario</option>
+                            
+                            
                         </select>
                     </div>
                     <hr>
