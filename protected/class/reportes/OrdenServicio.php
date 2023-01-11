@@ -65,7 +65,7 @@ class OrdenServicio extends FPDF {
         $this->Cell(60, 6, $o["identificacion"], 0, 1, 'L');
         
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(30, 6, ("OBJETO CONTRATO:"), 0, 1, 'L');
+        $this->Cell(38, 6, ("OBJETO CONTRATO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
         $this->Cell(166, 6, $o["objetoc"], 0, 1, 'L');
         
@@ -90,18 +90,26 @@ class OrdenServicio extends FPDF {
         //$this->SetFont('Arial', '', 9);
 
         //$this->MultiCell(196, 6, ($o["recorrido"] ), 1, 'C', 0);
-       if($o["tipo"] === "D"){
+       if($o["tipo"] !== "T" && $o["tipo"] !== "V"){
            $this->Cell(161, 6, ($o["recorrido"]),0,1,'L');
        }else{
-            $this->Cell(161, 6, ($o["barrio_o"] . " - " . $o["barrio_d"]), 0, 1, 'L');
+           $this->MultiCell(161, 6, ($o["barrio_o"] . " - " . $o["barrio_d"]).", ".($o["recorrido"]), 0, "L");
+            //$this->Cell(161, 6, ($o["barrio_o"] . " - " . $o["barrio_d"]).", ".($o["recorrido"]), 0, 1, 'L');
         }        
 
         if($o["convenio"])
         {
             $this->SetFont('Arial', 'B', 10);
-            $this->Cell(70, 6, ("CONVENIO/CONSORCIO/U.TEMPORAL:"), 0, 1, 'L');
+            $this->Cell(70, 6, ("CONVENIO/CONSORCIO/U.TEMPORAL:"), 0, 0, 'L');
             $this->SetFont('Arial', '', 10);
-            $this->Cell(126, 6, "     ".($o["convenio"]), 0, 1, 'L');
+            $this->Cell(126, 6, ($o["convenio"]), 0, 1, 'L');
+        }
+        if($o["observacion"])
+        {
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(30, 6, ("OBSERVACIÓN:"), 0, 0, 'L');
+            $this->SetFont('Arial', '', 10);
+            $this->Cell(126, 6, ($o["observacion"]), 0, 1, 'L');
         }
 
         $this->SetFont('Arial', 'B', 10);
@@ -162,7 +170,7 @@ class OrdenServicio extends FPDF {
             $this->SetWidths(array(25, 50, 28, 33, 60));
             $this->SetAligns(array('C', 'C', 'C', 'C', 'C'));
 
-            $this->Row(array("Conductor $i", ($c["nombre"]), ($c["identificacion"]), ($c["n_licencia"]), ($c["vigencia"])));
+            $this->Row(array("Conductor $i", ($c["nombre"]." ".$c["apellidos"]), ($c["identificacion"]), ($c["n_licencia"]), ($c["vigencia"])));
             $i++;
         }
 
@@ -171,7 +179,7 @@ class OrdenServicio extends FPDF {
             $this->SetWidths(array(25, 50, 28, 33, 60));
             $this->SetAligns(array('C', 'C', 'C', 'C', 'C'));
 
-            $this->Row(array("Conductor $i", ($d["nombre"]), ($d["identificacion"]), ($d["n_licencia"]), ($d["vigencia"])));
+            $this->Row(array("Conductor $i", ($d["nombre"]." ".$d["apellidos"]), ($d["identificacion"]), ($d["n_licencia"]), ($d["vigencia"])));
             $i++;
         }
         
@@ -210,19 +218,19 @@ class OrdenServicio extends FPDF {
                 $this->SetWidths(array(25, 50, 28, 33, 60));
                 $this->SetAligns(array('C', 'C', 'C', 'C', 'C'));
 
-                $this->Row(array("Responsable del contratante", ($o["cliente"]), $o["identificacion"], $o["celular"], ($o["direccion"])));
+                $this->Row(array("Responsable contratante", ($o["cliente"]), $o["identificacion"], $o["celular"], ($o["direccion"])));
                 break;
             case "J":                
                 $this->SetWidths(array(25, 50, 28, 33, 60));
                 $this->SetAligns(array('C', 'C', 'C', 'C', 'C'));
 
-                $this->Row(array("Responsable del contratante", ($o["c_nombre"]), $o["c_identificacion"], $o["c_telefono"], ($o["c_direccion"])));
+                $this->Row(array("Responsable contratante", ($o["c_nombre"]), $o["c_identificacion"], $o["c_telefono"], ($o["c_direccion"])));
                 break;
             case "P";                
                 $this->SetWidths(array(25, 50, 28, 33, 60));
                 $this->SetAligns(array('C', 'C', 'C', 'C', 'C'));
 
-                $this->Row(array("Responsable del contratante", ($o["r_nombre"]), $o["r_identificacion"], $o["r_celular"], ($o["r_direccion"])));
+                $this->Row(array("Responsable contratante", ($o["r_nombre"]), $o["r_identificacion"], $o["r_celular"], ($o["r_direccion"])));
                 break;
             default :
                 break;
@@ -233,12 +241,12 @@ class OrdenServicio extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(196, 6, "FORMATO UNICO EXTRACTO DE CONTRATO", 1, 1, 'C');
         $this->Ln(0);
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 9);
                 
         $this->SetWidths(array(98, 98));
         $this->SetAligns(array('C', 'C'));
-        $this->Row(array(("\n".C_RAZON_SOCIAL."\n ".C_DIR_T." \n Tels ".C_TELS." \n Email: ".C_EMAIL1." \n\n"),  "\n\n\n\n\nFirma Digital Ley 527 del 199, decreto 2364 de 2012"));
-        $this->Image('global/img/firma.jpg', $this->GetX() + 98 + 12, $this->GetY() - 29, 65, 25);
+        $this->Row(array(("\n".C_RAZON_SOCIAL."\n ".C_DIR_T." \n Tels ".C_TELS." \n Email: ".C_EMAIL1." \n\n"),  "\n\n\n\n\n\nFirma Digital Ley 527 del 199, decreto 2364 de 2012"));
+        $this->Image('global/img/firma.jpg', $this->GetX() + 98 + 12, $this->GetY() - 35, 65, 25);
             
         $this->SetFont('Arial', '', 8);
         $this->Cell(28, 6, ("Verificación Online :"), "LB", 0, 'L');

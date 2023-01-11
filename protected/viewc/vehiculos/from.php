@@ -430,7 +430,7 @@
                             <select class="form-control select2" id="id_conductor" name="id_conductor">
                                 <option value="">[Seleccione..]</option>
                                 <?php foreach ($data["conductore"] as $c) { ?>
-                                    <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
+                                    <option value="<?= $c->id; ?>"><?= $c->nombre.' '.$c->apellidos; ?></option>
                                 <?php } ?>
                             </select>
                         </div>

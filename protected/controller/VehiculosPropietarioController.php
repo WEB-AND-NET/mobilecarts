@@ -42,7 +42,7 @@ class VehiculosPropietarioController extends DooController  {
 
         
 
-        $id_p = $_SESSION['login']->id;
+        $id_p = $_SESSION['login']->id_usuario;
 
         Doo::loadModel("Vehiculos");
 
@@ -76,7 +76,7 @@ class VehiculosPropietarioController extends DooController  {
 
     public function edit() {
 
-        $id_p = $_SESSION['login']->id;
+        $id_p = $_SESSION['login']->id_usuario;
 
         $id = $this->params["pindex"];
 
@@ -812,7 +812,7 @@ class VehiculosPropietarioController extends DooController  {
 
         $documentos  = Doo::db()->query("SELECT dcd.id, d.nombre AS tipo, d.nombre_carpeta, dcd.id_vehiculo,dcd.nombre_documento,dcd.fecha_expedicion,dcd.fecha_vencimiento, if(dcd.estado <=> null,'I',dcd.estado) as estado 
 
-        FROM documentos d LEFT JOIN documentos_conductor_data dcd ON (dcd.id_documento = d.id AND id_vehiculo = '$id') WHERE d.tipo='VE' and d.vencimiento='S' ")->fetchAll();
+        FROM documentos d LEFT JOIN documentos_conductor_data dcd ON (dcd.id_documento = d.id AND id_vehiculo = '$id') WHERE d.tipo='VE' and d.vencimiento='S' and d.requerido = 'S' ")->fetchAll();
 
         echo json_encode($documentos);
 

@@ -56,9 +56,13 @@ class OrdenesController extends DooController {
         $this->data['rootUrl'] = Doo::conf()->APP_URL;
         if ($rol != "1" && $tipo != "A") {
             if($rol == "3"){
+                $_SESSION["list_conduct"] = serialize(array());
+                if (isset($_SESSION["list_conduct"])) {
+                    $_SESSION["list_conduct"] = null;
+                }
                 $this->data['content'] = 'ordenes/list_propietarios.php';
                 $this->renderc('index_propietarios', $this->data, true);
-//                return Doo::conf()->APP_URL . "ordenes/add";
+                //return Doo::conf()->APP_URL . "ordenes/add";
             }  
             if($rol == "4"){
                 $this->data['content'] = 'ordenes/list_clientes.php';
@@ -67,7 +71,7 @@ class OrdenesController extends DooController {
                 $this->data['saldo'] = $rsvalor["valor"];
                 
                 $this->renderc('index_clientes', $this->data, true);
-//                return Doo::conf()->APP_URL . "ordenes/add";
+                //return Doo::conf()->APP_URL . "ordenes/add";
             }  
             if($rol == "5"){
                 $id_usuario = $login->id_usuario;
@@ -82,7 +86,7 @@ class OrdenesController extends DooController {
                 $this->data['saldo'] = $rsvalor["valor"];
            
                 $this->renderc('index_clientes', $this->data, true);
-//                return Doo::conf()->APP_URL . "ordenes/add";
+                //return Doo::conf()->APP_URL . "ordenes/add";
             }  
         } else {
 
@@ -141,8 +145,8 @@ class OrdenesController extends DooController {
          */
         $sLimit = "";
         if (isset($_POST['iDisplayStart']) && $_POST['iDisplayLength'] != '-1') {
-//		$sLimit = "LIMIT ".mysql_real_escape_string( $_POST['iDisplayStart'] ).", ".
-//			mysql_real_escape_string( $_POST['iDisplayLength'] );
+		//$sLimit = "LIMIT ".mysql_real_escape_string( $_POST['iDisplayStart'] ).", ".
+			//mysql_real_escape_string( $_POST['iDisplayLength'] );
             $sLimit = "LIMIT " . $_POST['iDisplayStart'] . ", " .
                     $_POST['iDisplayLength'];
         }
@@ -163,8 +167,8 @@ class OrdenesController extends DooController {
 				 	" . $_POST['sSortDir_' . $i] . ", ";
                     }
                     //Codigo original
-//                    $sOrder .= $aColumns[intval($_POST['iSortCol_' . $i])] . "
-//                        " . $_POST['sSortDir_' . $i] . ", ";   
+                    //$sOrder .= $aColumns[intval($_POST['iSortCol_' . $i])] . "
+                        //" . $_POST['sSortDir_' . $i] . ", ";   
                 }
             }
 
@@ -174,9 +178,9 @@ class OrdenesController extends DooController {
             }
         }
         //custom code
-//        else{
-//            $sOrder = "ORDER BY c.nombre ASC";
-//        }
+        //else{
+            //$sOrder = "ORDER BY c.nombre ASC";
+        //}
 
         /*
          * Filtering
@@ -250,27 +254,25 @@ class OrdenesController extends DooController {
 		FROM   $sTable
 		$sWhere
 		$sOrder
-		$sLimit
-	";
-//        echo($sQuery);
-//        exit($sQuery);
+		$sLimit ";
+        //echo($sQuery);
+        //exit($sQuery);
         $tarifas = Doo::db()->query($sQuery)->fetchAll();
 
-//        $total = Doo::db()->query("SELECT count(id) AS total FROM $sTable $sWhere")->fetch();        
-//        $nTotal = $total["total"];
+       //$total = Doo::db()->query("SELECT count(id) AS total FROM $sTable $sWhere")->fetch();        
+       //$nTotal = $total["total"];
 
         /* Total data set length */
         $sQuery = "
 		SELECT COUNT(" . $sIndexColumn . ") AS total 
-		FROM $sTable $sWhere
-	";
+		FROM $sTable $sWhere ";
        
         $total = Doo::db()->query($sQuery)->fetch();
         $iTotal = $total["total"];
 
 
         $aaData = array();
-//        $aColumns = array('id', 'fecha', 'cliente', 'tipo', 'barrio_o', 'origen', 'barrio_d', 'clase_vehiculo', 'placa', 'estado', 'created_at' );
+        //$aColumns = array('id', 'fecha', 'cliente', 'tipo', 'barrio_o', 'origen', 'barrio_d', 'clase_vehiculo', 'placa', 'estado', 'created_at' );
         foreach ($tarifas as $row) {
             $aaData[] = array(
                 $row['id'],                
@@ -308,9 +310,10 @@ class OrdenesController extends DooController {
         $this->data['rootUrl'] = Doo::conf()->APP_URL;
         $this->data['ordenes'] = new OrdenesServicios();
 
+        $this->data["rol"] = $rol;
         $this->data['barrio_o'] = Doo::db()->find("Barrios", array("select" => "id,nombre", "asc" => "nombre"));
         $this->data['clases_v'] = Doo::db()->find("ClasesVehiculos", array("select" => "id,nombre", "where" => "deleted=0", "asc" => "nombre"));
-        $this->data['conductores'] = Doo::db()->find("Conductores", array("select" => "id,nombre", "where" => "deleted=0", "asc" => "nombre"));                
+        $this->data['vehiculos'] = array();
         $this->data['objetos_contrato'] = Doo::db()->query("SELECT nombre FROM objetos_contrato")->fetchAll();
 
         if ($rol != "1" && $tipo != "A") {                                   
@@ -323,19 +326,9 @@ class OrdenesController extends DooController {
                 $this->data['propietarios'] = Doo::db()->query($query)->fetch();
 
                 $this->data['clientes'] = Doo::db()->find("Clientes", array("select" => "id,nombre,tipo", "where" => "deleted=0 AND id_usuario=$login->id_usuario", "asc" => "nombre"));
+                $this->data['conductores'] = Doo::db()->find("Conductores", array("select" => "id,nombre", "where" => "deleted=0 AND id_propietario = '$login->id_usuario'", "asc" => "nombre"));                
                 
-                $qp = "SELECT id,placa,id_clase,";
-                $qp.= "soat AS f_soat,IF (soat <= CURDATE(),'Vencido','Valido') AS v_soat,";
-                $qp.= "tecnomecanica AS f_tecnomecanica,IF (tecnomecanica <= CURDATE(),'Vencido','Valido') AS v_tecnomecanica,";
-                $qp.= "v_contra AS f_contra,IF (v_contra <= CURDATE(),'Vencido','Valido') AS v_contra,";
-                $qp.= "v_extra AS f_extra,IF (v_extra <= CURDATE(),'Vencido','Valido') AS v_extra,";
-                $qp.= "v_tg_operacion AS f_operacion,IF (v_tg_operacion <= CURDATE(),'Vencido','Valido') AS v_operacion,";
-                //$qp.= "v_todo AS f_todo,IF (v_todo <= CURDATE(),'Vencido','Valido') AS v_todo,";
-                $qp.= "IF( soat <= CURDATE() OR tecnomecanica <= CURDATE() OR v_contra <= CURDATE() OR v_extra <= CURDATE() OR v_tg_operacion <= CURDATE() "; //OR
-                $qp.= " , 'Vencido', 'Valido' ) AS vigente "; //v_todo <= CURDATE()
-                $qp.= " , estado "; 
-                $qp.= "FROM vehiculos WHERE id_propietario = $id_usuario AND deleted = 0";                                         
-                $this->data['vehiculos'] = Doo::db()->query($qp)->fetchAll();
+                
                 $this->data['content'] = 'ordenes/from_propietarios.php';
                 $this->renderc('index_propietarios', $this->data, true);
             }  
@@ -379,8 +372,9 @@ class OrdenesController extends DooController {
                 $this->renderc('index_clientes', $this->data, true);
             } 
         } else {
+            $this->data['conductores'] = Doo::db()->find("Conductores", array("select" => "id,nombre", "where" => "deleted=0", "asc" => "nombre"));                
             $this->data['clientes'] = Doo::db()->find("Clientes", array("select" => "id,nombre,tipo", "where" => "deleted=0 AND tipo != 'P'", "asc" => "nombre"));
-            $this->data['vehiculos'] = array();
+            
             $this->data['content'] = 'ordenes/from.php';
             $this->renderc('index', $this->data, true);
         }
@@ -655,8 +649,7 @@ class OrdenesController extends DooController {
         
         if ($rol != "1" && $tipo != "A") {
             if($rol == "3"){
-                $ordenes->tipo = 'T';
-                $ordenes->origen = '';
+                
                 $ordenes->nhora = 0;
             }
             if($rol == "4"){
@@ -666,10 +659,10 @@ class OrdenesController extends DooController {
         }
 
         if ($ordenes->id == Null) {
-            if ($ordenes->tipo == "D") {
+            if ($ordenes->tipo != "T" && $ordenes->tipo != "V" ) {
                 $ordenes->barrio_o = "0";
                 $ordenes->barrio_d = "0";
-            } else if ($ordenes->tipo == "T") {
+            } else if ($ordenes->tipo == "T" || $ordenes->tipo == "V") {
                 $ordenes->nhora = "0";
             }
             $ordenes->id_usuario = $id_usuario;
@@ -702,7 +695,7 @@ class OrdenesController extends DooController {
                 return Doo::conf()->APP_URL . "ordenes";
             }
         } else {
-            if ($ordenes->tipo == "D") {
+            if ($ordenes->tipo != "T" && $ordenes->tipo != "V") {
                 $ordenes->barrio_o = "0";
                 $ordenes->barrio_d = "0";
             }
@@ -832,23 +825,54 @@ class OrdenesController extends DooController {
 
 
     public function cargar_vehiculo() {
+
+        $login = $_SESSION['login'];
+        $rol = $login->role;
+
         $id_cla = $_POST["id_cl"];
         $id_veh = $_POST["id_vh"];
 
         //$r = Doo::db()->query("SELECT id,placa,marca,modelo FROM vehiculos WHERE id_clase=$id_cla")->fetchAll();
-        
-        $query = "SELECT v.id, v.placa, v.marca, v.modelo, c.id AS id_c, c.nombre
+        if ($rol == "3") {
+            $qp = "SELECT v.id,v.placa,id_clase, v.marca, v.modelo, c.id AS id_c, c.nombre, soat AS f_soat,
+            IF (soat <= CURDATE(),'Vencido','Valido') AS v_soat, tecnomecanica AS f_tecnomecanica,
+            IF (tecnomecanica <= CURDATE(),'Vencido','Valido') AS v_tecnomecanica, v_contra AS f_contra,
+            IF (v_contra <= CURDATE(),'Vencido','Valido') AS v_contra, v_extra AS f_extra,
+            IF (v_extra <= CURDATE(),'Vencido','Valido') AS v_extra, v_tg_operacion AS f_operacion,
+            IF (v_tg_operacion <= CURDATE(),'Vencido','Valido') AS v_operacion,
+            IF( soat <= CURDATE() OR tecnomecanica <= CURDATE() OR v_contra <= CURDATE() OR v_extra <= CURDATE() OR v_tg_operacion <= CURDATE(), 'Vencido', 'Valido' ) AS vigente, v.estado 
+            FROM vehiculos v 
+            INNER JOIN vehiculos_conductores vc ON (v.id = vc.id_vehiculo)
+            INNER JOIN conductores c  ON (c.id = vc.id_conductor)
+            WHERE v.id_clase = $id_cla AND v.id_propietario = $login->id_usuario; AND v.deleted = 0
+            ORDER BY v.placa,c.nombre ASC";
+            $r = Doo::db()->query($qp)->fetchAll();
+        } else {
+            $query = "SELECT v.id, v.placa, v.marca, v.modelo, c.id AS id_c, c.nombre, soat AS f_soat,
+            IF (soat <= CURDATE(),'Vencido','Valido') AS v_soat, tecnomecanica AS f_tecnomecanica,
+            IF (tecnomecanica <= CURDATE(),'Vencido','Valido') AS v_tecnomecanica, v_contra AS f_contra,
+            IF (v_contra <= CURDATE(),'Vencido','Valido') AS v_contra, v_extra AS f_extra,
+            IF (v_extra <= CURDATE(),'Vencido','Valido') AS v_extra, v_tg_operacion AS f_operacion,
+            IF (v_tg_operacion <= CURDATE(),'Vencido','Valido') AS v_operacion,
+            IF( soat <= CURDATE() OR tecnomecanica <= CURDATE() OR v_contra <= CURDATE() OR v_extra <= CURDATE() OR v_tg_operacion <= CURDATE(), 'Vencido', 'Valido' ) AS vigente, v.estado 
                   FROM conductores c 
                   INNER JOIN vehiculos_conductores vc ON (c.id = vc.id_conductor)
                   INNER JOIN vehiculos v ON (v.id = vc.id_vehiculo)
                   WHERE v.id_clase = $id_cla AND c.estado = 'D' AND vc.deleted = 0 
                   ORDER BY v.placa,c.nombre ASC";
-        
-        $r =  Doo::db()->query($query)->fetchAll();
+
+            $r =  Doo::db()->query($query)->fetchAll();
+        }
         
         $this->data["vehiculos"] = $r;
+        $this->data["rol"] = $rol;
         $this->data["selected"] = $id_veh;
-        $this->renderc("ordenes/select", $this->data, true);
+
+        if ($rol == "3") {
+            $this->renderc("ordenes/selectp", $this->data, true);
+        } else {
+            $this->renderc("ordenes/select", $this->data, true);
+        }
     }
     
     public function cargar_vehiculoP() {
@@ -1025,7 +1049,7 @@ class OrdenesController extends DooController {
             b2.nombre AS barrio_d,v.id AS id_vehiculo,v.placa,v.modelo,v.marca,cv.nombre AS clase,cvenio.razon_social AS convenio,v.num_interno,v.tg_operacion,o.fecha,
             date_format(o.fecha_inicial,'%d') AS ini_d,date_format(o.fecha_inicial,'%m') AS ini_m,date_format(o.fecha_inicial,'%Y') AS ini_a,
             date_format(o.fecha_final,'%d') AS fin_d,date_format(o.fecha_final,'%m') AS fin_m,date_format(o.fecha_final,'%Y') AS fin_a,
-            date_format(o.fecha,'%d de %M del %Y, Hora %r') AS expedido
+            date_format(o.fecha,'%d de %M del %Y, Hora %r') AS expedido, o.observacion
             FROM ordenes_servicios o
             INNER JOIN clientes c ON (o.id_cliente = c.id)
             LEFT JOIN contactos con ON (con.id = o.id_contacto)
@@ -1041,7 +1065,7 @@ class OrdenesController extends DooController {
         $orden = Doo::db()->query($q1)->fetch();
 
         if (isset($orden["id_vehiculo"])) {
-            $q2 = "SELECT c.nombre,c.identificacion,c.n_licencia,c.vigencia,c.email FROM conductores c ";
+            $q2 = "SELECT c.nombre, c.apellido,c.identificacion,c.n_licencia,c.vigencia,c.email FROM conductores c ";
             $q2.= "INNER JOIN vehiculos_conductores vc ON (c.id = vc.id_conductor) INNER JOIN vehiculos v ";
             $q2.= "ON (v.id = vc.id_vehiculo) WHERE vc.deleted = 0 AND v.id = '" . $orden["id_vehiculo"] . "'";
             $conductores = Doo::db()->query($q2)->fetchAll();
@@ -1049,7 +1073,7 @@ class OrdenesController extends DooController {
             $conductores = array();
         }
 
-        $q3 = "SELECT oc.id,c.id AS id_conductor,c.identificacion,c.nombre,c.n_licencia,c.vigencia
+        $q3 = "SELECT oc.id,c.id AS id_conductor,c.identificacion,c.nombre, c.apellido, c.n_licencia,c.vigencia
         FROM conductores c 
         INNER JOIN ordenes_conductores oc ON(c.id = oc.id_conductor) 
         WHERE oc.deleted=0 AND oc.id_servicio = $id";
@@ -1152,7 +1176,7 @@ class OrdenesController extends DooController {
             }
         }
         
-        if($orden["tipo"] === "T"){
+        if($orden["tipo"] === "T" || $orden["tipo"] === "V"){
             $query = 'SELECT tarifa_transfer("S",'.$orden["id_cliente"].','.$orden["barrio_o"].', '.$orden["barrio_d"].', '.$orden["clase_vehiculo"].') AS valor,';  
             $query .='tarifa_transfer("N",'.$orden["id_cliente"].','.$orden["barrio_o"].', '.$orden["barrio_d"].', '.$orden["clase_vehiculo"].') AS valoro ,';          
              //$query .='ABS(transfer) AS porc_desc FROM contratos where id_cliente = '.$orden["id_cliente"].';';

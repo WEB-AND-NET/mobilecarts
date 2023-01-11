@@ -38,9 +38,14 @@ class DocumentosBase extends DooModel{
      */
     public $attr;
 
+    /**
+     * @var char Max length is 1.
+     */
+    public $requerido;
+
     public $_table = 'documentos';
     public $_primarykey = 'id';
-    public $_fields = array('id','nombre','nombre_carpeta','vencimiento','tipo','deleted','attr');
+    public $_fields = array('id','nombre','nombre_carpeta','vencimiento','tipo','deleted','attr','requerido');
 
     public function getVRules() {
         return array(
@@ -77,7 +82,12 @@ class DocumentosBase extends DooModel{
 
                 'attr' => array(
                         array( 'optional' ),
-                )
+                ),
+
+                'requerido' => array(
+                        array( 'maxlength', 1 ),
+                        array( 'optional' ),
+                ),
             );
     }
 

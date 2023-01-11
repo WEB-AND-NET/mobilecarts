@@ -30,11 +30,11 @@ class ConductoresController extends DooController {
         $this->data['rootUrl'] = Doo::conf()->APP_URL;
         $this->data['content'] = 'conductores/list.php';
         if ($login->role == "3") {
-            $sql = "SELECT id,identificacion,nombre,celular,email,tipo,estado_c_p FROM conductores WHERE deleted=0 AND id_propietario = '$login->id' ORDER BY nombre ASC";
+            $sql = "SELECT id,identificacion,nombre,celular,email,tipo,estado_c_p FROM conductores WHERE deleted=0 AND id_propietario = '$login->id_usuario' ORDER BY nombre ASC";
             $this->data['conductores'] = Doo::db()->query($sql)->fetchAll();
             $this->renderc('index_propietarios', $this->data, true);
         } else {
-            $sql = "SELECT c.id,c.identificacion,c.nombre,c.celular,c.email,c.tipo,c.estado_c_p, u.nombre AS propietario FROM conductores c LEFT JOIN usuarios u ON (c.id_propietario=u.id) WHERE c.deleted=0 ORDER BY c.nombre ASC";
+            $sql = "SELECT c.id,c.identificacion,c.nombre,c.celular,c.email,c.tipo,c.estado_c_p, p.razon_social AS propietario FROM conductores c LEFT JOIN propietarios p ON (c.id_propietario=p.id) WHERE c.deleted=0 ORDER BY c.nombre ASC";
             $this->data['conductores'] = Doo::db()->query($sql)->fetchAll();
             $this->renderc('index', $this->data, true);
         }
@@ -116,10 +116,7 @@ class ConductoresController extends DooController {
         $this->data['rootUrl'] = Doo::conf()->APP_URL;
         $c = new Conductores();
         $c->vigencia = date('m/d/Y');
-        $this->data['propietarios'] = Doo::db()->query("SELECT u.id,u.identificacion, razon_social, telefono, pago_estado, revision_estado
-        FROM propietarios p
-        inner join usuarios u on (p.id=u.id_usuario)
-        WHERE u.tipo='P' and p.deleted=0 ORDER BY razon_social ASC")->fetchAll();  
+        $this->data['propietarios'] = Doo::db()->find("Propietarios", array("select" => "id,razon_social", "asc" => "razon_social", 'where' => 'deleted = 0'));
         $this->data['conductores'] = $c;
 
         $this->data['conductore'] = Doo::db()->find("Conductores", array("select" => "id,nombre", "desc" => "id"));
@@ -139,10 +136,7 @@ class ConductoresController extends DooController {
         $this->data['rootUrl'] = Doo::conf()->APP_URL;
         $conductores->vigencia = (new DateTime($conductores->vigencia))->format('m/d/Y');
         $this->data['conductores'] = $conductores;
-        $this->data['propietarios'] = Doo::db()->query("SELECT u.id,u.identificacion, razon_social, telefono, pago_estado, revision_estado
-        FROM propietarios p
-        inner join usuarios u on (p.id=u.id_usuario)
-        WHERE u.tipo='P' and p.deleted=0 ORDER BY razon_social ASC")->fetchAll();
+        $this->data['propietarios'] = Doo::db()->find("Propietarios", array("select" => "id,razon_social", "asc" => "razon_social", 'where' => 'deleted = 0'));
         $this->data['content'] = 'conductores/from.php';
         $this->data['role']=$login->role;
         if($login->role == "3"){
@@ -178,7 +172,9 @@ class ConductoresController extends DooController {
             $conductores->estado = "D";
             $conductores->created_at = date('Y-m-d H:i:s');
             $conductores->updated_at = date('Y-m-d H:i:s');
-            $conductores->id_propietario = $login->id;
+            if($login->role == "3"){ 
+            $conductores->id_propietario = $login->id_usuario;
+            }
             $conductores->id = Doo::db()->insert($conductores);
             
                 
@@ -189,7 +185,9 @@ class ConductoresController extends DooController {
             $date = new DateTime($conductores->vigencia);
             $conductores->vigencia = $date->format('Y/m/d');
             //..............................................
-
+            if($login->role == "3"){ 
+                $conductores->id_propietario = $login->id_usuario;
+            }
             $conductores->updated_at = date('Y-m-d H:i:s');
             Doo::db()->Update($conductores);
         }

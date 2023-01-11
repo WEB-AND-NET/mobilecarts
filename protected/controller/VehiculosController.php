@@ -3,7 +3,7 @@
 /**
  * Description of VehiculosController
  *
- * @author Carlos Meriño Iriarte <carlos.merino.iriarte@gmail.com>
+ * @author Carlos Meri単o Iriarte <carlos.merino.iriarte@gmail.com>, Maykel Rhenals.
  */
 class VehiculosController extends DooController {
 
@@ -50,7 +50,7 @@ class VehiculosController extends DooController {
         $this->data['vehiculos'] = $v;
         $this->data['clases'] = Doo::db()->find("ClasesVehiculos", array("select" => "id,nombre", "asc" => "nombre", 'where' => 'deleted = 0'));        
         $this->data['propietario'] = Doo::db()->find("Propietarios", array("select" => "id,razon_social", "asc" => "razon_social", 'where' => 'deleted = 0'));
-        $this->data['conductore'] = Doo::db()->find("Conductores", array("select" => "id,nombre", "asc" => "nombre", 'where' => 'deleted = 0'));
+        $this->data['conductore'] = Doo::db()->find("Conductores", array("select" => "id,nombre, apellidos", "asc" => "nombre", 'where' => 'deleted = 0'));
         $this->data['convenios'] = Doo::db()->find("Convenios", array("select" => "id,razon_social", "asc" => "razon_social", 'where' => 'deleted = 0'));
 
         $this->data['content'] = 'vehiculos/from.php';
@@ -66,7 +66,7 @@ class VehiculosController extends DooController {
         $this->data['vehiculos'] = $vehiculos;
         $this->data['clases'] = Doo::db()->find("ClasesVehiculos", array("select" => "id,nombre", "asc" => "nombre", 'where' => 'deleted = 0'));
         $this->data['propietario'] = Doo::db()->find("Propietarios", array("select" => "id,razon_social", "asc" => "razon_social", 'where' => 'deleted = 0'));
-        $this->data['conductore'] = Doo::db()->find("Conductores", array("select" => "id,nombre", "asc" => "nombre", 'where' => 'deleted = 0'));
+        $this->data['conductore'] = Doo::db()->find("Conductores", array("select" => "id,nombre,apellidos", "asc" => "nombre", 'where' => 'deleted = 0'));
         $this->data['convenios'] = Doo::db()->find("Convenios", array("select" => "id,razon_social", "asc" => "razon_social", 'where' => 'deleted = 0'));
         
         $query = "SELECT vc.id,c.id AS id_conductor,c.nombre,c.celular,c.direccion,c.email FROM conductores c INNER JOIN vehiculos_conductores vc ON(c.id = vc.id_conductor) WHERE vc.deleted=0 AND vc.id_vehiculo = '$id'";

@@ -182,7 +182,7 @@
                         <select class="form-control select2" id="id_propietario" name="id_propietario">
                             <option value="">[Seleccione..]</option>
                             <?php foreach ($data["propietarios"] as $m) { ?>
-                                <option <?= ($a->id_propietario == $m['id'] ? 'selected="selected"' : ''); ?> value="<?= $m['id'] ?>"><?= $m['razon_social']; ?></option>
+                                <option <?= ($a->id_propietario == $m->id ? 'selected="selected"' : ''); ?> value="<?= $m->id ?>"><?= $m->razon_social; ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -354,14 +354,14 @@
         sErrMsg += validateText($('#genero').val(), $('#l_genero').html(), true);
         sErrMsg += validateText($('#fecha_nac').val(), $('#l_fecha_nac').html(), true);
         sErrMsg += validateText($('#grupo_san').val(), $('#l_grupo_san').html(), true);
-        sErrMsg += validateText($('#libreta_mil').val(), $('#l_libreta_mil').html(), true);
+        /*sErrMsg += validateText($('#libreta_mil').val(), $('#l_libreta_mil').html(), true);
         sErrMsg += validateText($('#clase').val(), $('#l_clase').html(), true);
-        sErrMsg += validateText($('#dm').val(), $('#l_dm').html(), true);
+        sErrMsg += validateText($('#dm').val(), $('#l_dm').html(), true);*/
         sErrMsg += validateNumber($('#celular').val(), $('#l_celular').html(), true);
         sErrMsg += validateText($('#telefono').val(), $('#l_telefono').html(), true);
         sErrMsg += validateText($('#email').val(), $('#l_email').html(), true);
         sErrMsg += validateText($('#direccion').val(), $('#l_direccion').html(), true);
-        sErrMsg += validateText($('#id_propietario').val(), $('#l_id_propietario').html(), true);
+        //sErrMsg += validateText($('#id_propietario').val(), $('#l_id_propietario').html(), true);
         sErrMsg += validateText($('#tipo').val(), $('#l_tipo').html(), true);
         sErrMsg += validateText($('#niveled').val(), $('#l_niveled').html(), true);
         sErrMsg += validateText($('#cat_licencia').val(), $('#l_cat_licencia').html(), true);

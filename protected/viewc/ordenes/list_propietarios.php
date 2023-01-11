@@ -144,7 +144,27 @@
                 "order": [[ 0, "desc" ]],
                 "createdRow": function (row, data, index) { // add radio buttons
                     $('td', row).eq(0).html('<input class="minimal" name="item" type="radio" onchange="doalert(this)" placeholder= "'+data[11]+'" value="' + data[0] + '">'); 
-                    var tipo = data[4] == "D" ? 'Disponibilidad' : 'Transfers';
+                    
+                    var tipo = "";
+                    switch (data[4]) {
+                        case "C":
+                            tipo = "City Tours"
+                            break
+                        case "D":
+                            tipo = "Disponibilidad"
+                            break
+                        case "R":
+                            tipo = "Recorridos"
+                            break
+                        case "T":
+                            tipo = "Transfers"
+                            break
+                        case "V":
+                            tipo = "Viajes"
+                            break
+
+                    }                    
+
                     $('td', row).eq(3).html(tipo);   
                   
                     switch (data[11]) {

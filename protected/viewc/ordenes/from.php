@@ -50,8 +50,11 @@
                         </div>
                         <select class="form-control select2"  id="tipo" name="tipo">
                             <option value="">[Seleccione..]</option>
-                            <option <?= $a->tipo == "T" ? 'selected="selected"' : '' ?> value="T">Transfers</option>
+                            <option <?= $a->tipo == "C" ? 'selected="selected"' : '' ?> value="C">City Tours</option>
                             <option <?= $a->tipo == "D" ? 'selected="selected"' : '' ?> value="D">Disponibilidad</option>
+                            <option <?= $a->tipo == "R" ? 'selected="selected"' : '' ?> value="R">Recorridos</option>
+                            <option <?= $a->tipo == "T" ? 'selected="selected"' : '' ?> value="T">Transfers</option>                            
+                            <option <?= $a->tipo == "V" ? 'selected="selected"' : '' ?> value="V">Viajes</option>
                         </select>
                     </div>
                 </div>
@@ -384,17 +387,7 @@
 <script type="text/javascript">
 
     function changeSelect() {
-        if ($('#tipo').val() === 'D') {
-            $("#hora").css("display", "block");
-            $("#porigen").css("display", "none");
-            $("#pdestino").css("display", "none");
-
-            if ($('#id').val() === '') {
-                $("#valor").val(0);
-                $("#total").html(accounting.formatMoney(0));
-            }
-            calcularPrecio($("#clase_vehiculo").val());
-        } else {
+        if ($('#tipo').val() === 'T' || $('#tipo').val() === 'V') {
             $("#saltolinea").css("display", "block");
             $("#hora").css("display", "none");
             $("#porigen").css("display", "block");
@@ -406,6 +399,18 @@
 
             $("#valor").val(0);
             $("#total").html(accounting.formatMoney(0));
+            calcularPrecio($("#clase_vehiculo").val());
+
+            
+        } else {
+            $("#hora").css("display", "block");
+            $("#porigen").css("display", "none");
+            $("#pdestino").css("display", "none");
+
+            if ($('#id').val() === '') {
+                $("#valor").val(0);
+                $("#total").html(accounting.formatMoney(0));
+            }
             calcularPrecio($("#clase_vehiculo").val());
         }
     }
@@ -538,6 +543,7 @@
              });*/
         });
     }
+    
     function changeCliente() {
         var id_client = $('#id_cliente').val();
         var id_contact = '<?= $a->id_contacto ?>';
@@ -624,7 +630,7 @@
 
     function calcularPrecio(idCl) {
         var send = {};
-        if ($('#tipo').val() === 'D') {
+        if ($('#tipo').val() !== "T" && $('#tipo').val() !== "V") {
             send = {id_cli: $('#id_cliente').val(), tipo: $('#tipo').val(), nhora: $('#nhora').val(), cl: idCl};
 //            alert(send.tipo+" - "+send.nhora+" - "+idCl);
         } else {
@@ -762,11 +768,11 @@
         var flag = true;
 
         sErrMsg += ($('#tipo').val() === "" ? '- Debe seleccionar Un Tipo de servicio.\n' : '');
-        if ($('#tipo').val() !== "D") {
+        if ($('#tipo').val() === "T" || $('#tipo').val() === "V") {
             sErrMsg += validateText($('#barrio_o').val(), $('#l_barrio_o').html(), true);
             sErrMsg += validateText($('#barrio_d').val(), $('#l_barrio_d').html(), true);
         }
-        if ($('#tipo').val() === "D") {
+        if ($('#tipo').val() !== "T" && $('#tipo').val() !== "V") {
             sErrMsg += validateNumber($('#nhora').val(), $('#l_nhora').html(), true);
         }
         sErrMsg += validateNumber($('#n_pasajero').val(), $('#l_n_pasajero').html(), true);
@@ -798,14 +804,14 @@
         var flag = true;
         sErrMsg += ($('#tipo').val() === "" ? '- Debe seleccionar Un Tipo de servicio.\n' : '');
 
-        if ($('#tipo').val() === "T") {
+        if ($('#tipo').val() === "T" || $('#tipo').val() === "V") {
             sErrMsg += validateText($('#barrio_o').val(), $('#l_barrio_o').html(), true);
             sErrMsg += validateText($('#barrio_d').val(), $('#l_barrio_d').html(), true);
             sErrMsg += validateText($('#id_cliente').val(), $('#l_id_cliente').html(), true);
 //            if( ! (id_clase === "5" || id_clase === "6" || id_clase === "7") ){
 //                sErrMsg += "Tipo de vehiculo no disponible para Transfers.";
 //            }
-        } else if ($('#tipo').val() === "D") {
+        } else if ($('#tipo').val() !== "T" && $('#tipo').val() !== "V") {
             sErrMsg += validateNumber($('#nhora').val(), $('#l_nhora').html(), true);
         }
         if (sErrMsg !== "")
