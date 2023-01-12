@@ -1073,7 +1073,7 @@ class OrdenesController extends DooController {
             $conductores = array();
         }
 
-        $q3 = "SELECT oc.id,c.id AS id_conductor,c.identificacion,c.nombre, c.apellido, c.n_licencia,c.vigencia
+        $q3 = "SELECT oc.id,c.id AS id_conductor,c.identificacion,c.nombre, c.apellidos, c.n_licencia,c.vigencia
         FROM conductores c 
         INNER JOIN ordenes_conductores oc ON(c.id = oc.id_conductor) 
         WHERE oc.deleted=0 AND oc.id_servicio = $id";
