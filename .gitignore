@@ -6,3 +6,10 @@ protected/config/common.conf.php
 
 #Ignore config strings
 protected/config/strings.conf.php
+
+#Ignore documentacion
+/documentacion
+
+#Ignore docs
+/global/docs/planillas/.pdf
+/global/docs/planillas/qrcodes/.png

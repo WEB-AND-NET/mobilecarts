@@ -1065,7 +1065,7 @@ class OrdenesController extends DooController {
         $orden = Doo::db()->query($q1)->fetch();
 
         if (isset($orden["id_vehiculo"])) {
-            $q2 = "SELECT c.nombre, c.apellido,c.identificacion,c.n_licencia,c.vigencia,c.email FROM conductores c ";
+            $q2 = "SELECT c.nombre, c.apellidos,c.identificacion,c.n_licencia,c.vigencia,c.email FROM conductores c ";
             $q2.= "INNER JOIN vehiculos_conductores vc ON (c.id = vc.id_conductor) INNER JOIN vehiculos v ";
             $q2.= "ON (v.id = vc.id_vehiculo) WHERE vc.deleted = 0 AND v.id = '" . $orden["id_vehiculo"] . "'";
             $conductores = Doo::db()->query($q2)->fetchAll();
