@@ -19,13 +19,18 @@ class MainController extends DooController {
             $login = $_SESSION['login'];
             $rol = $login->role;
             $tipo = $login->tipo;
+            
 
             $this->data['rootUrl'] = Doo::conf()->APP_URL;
-            if ($rol != "1" && $tipo != "A") {
+            if ($rol == "6")
+            {
+                return Doo::conf()->APP_URL . "checklist";
+            }
+            else if ($rol != "1" && $tipo != "A") {
 //                $this->data['content'] = 'home_propietarios.php';
 //                $this->renderc('index_propietarios', $this->data, true);
                  return Doo::conf()->APP_URL . "ordenes_servicios";
-            } else {
+            } else   {
                 $this->data['content'] = 'home.php';
                 $this->renderc('index', $this->data);
             }
