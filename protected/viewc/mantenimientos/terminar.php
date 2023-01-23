@@ -72,7 +72,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-dollar"></i>
                         </div>
-                        <input type="number" class="form-control pull-right" value="<?= $a->costoTotal; ?>" id="costoTotal" name="costoTotal" >
+                        <input type="number" class="form-control pull-right" value="<?= $a->costoTotal; ?>" id="costoTotal" name="costoTotal">
                     </div>
                 </div>
 
@@ -120,7 +120,7 @@
                                 <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
                             <?php } ?>
                         </select>
-                        
+
                     </div>
                 </div>
 
@@ -152,25 +152,27 @@
                 <div class="clearfix"></div>
                 <br />
 
-                <table id="tabledatas" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Actividad</th>
-                            <th scope="col">Anotaciones</th>
-                            <th scope="col">Costo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="items">
-                        <tr>
-                        <td class="ch-message-information" colspan="5">Cargando lista de actividades</td>
-                        </tr>
-                       
+                <div class="table-responsive" style="width: auto;">
+                    <table id="tabledatas" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Actividad</th>
+                                <th scope="col">Anotaciones</th>
+                                <th scope="col">Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items">
+                            <tr>
+                                <td class="ch-message-information" colspan="5">Cargando lista de actividades</td>
+                            </tr>
 
 
 
-                    </tbody>
-                    
-                </table>
+
+                        </tbody>
+
+                    </table>
+                </div>
             </fieldset>
 
             <div class="box-footer col-lg-2 pull-right">
@@ -178,7 +180,7 @@
                 <button type="button" id="btn-save" class="btn  bg-green pull-right">Guardar</button>
                 <input name="id" type="hidden" id="id" value="<?= $a->id; ?>" />
                 <input name="vehiculoId" type="hidden" id="vehiculoId" value="<?= $data['idVehiculo']  ?>" />
-                <input name="archivo" type="hidden" id="archivo" value="<?= $a->archivoFactura?>"/>
+                <input name="archivo" type="hidden" id="archivo" value="<?= $a->archivoFactura ?>" />
 
             </div>
         </div>
@@ -191,8 +193,6 @@
 <script type="text/javascript" src="<?= $patch; ?>global/js/form.js"></script>
 
 <script type="text/javascript">
-
-
     function validateForm() {
 
         var sErrMsg = "";
@@ -228,7 +228,7 @@
     $('#btn-addActivity').click(function() {
         AddItemE();
     });
-    
+
     // Agregar una nueva actividad a la grilla
     function AddItemE() {
         $("#form1").mask("Espere...");
@@ -246,7 +246,7 @@
             }
         );
     }
-    
+
     // Eliminar un conductor de la grilla
     function delItem(i) {
         $("#form1").mask("Espere...");
@@ -266,7 +266,7 @@
 
     $('#btn-cancel').click(function() {
         $.post('<?= $patch; ?>vehiculos/clean', {}, function(data) {
-            window.location = '<?= $patch; ?>mantenimientos/<?=$data['idVehiculo'];?>';
+            window.location = '<?= $patch; ?>mantenimientos/<?= $data['idVehiculo']; ?>';
         });
     });
 </script>

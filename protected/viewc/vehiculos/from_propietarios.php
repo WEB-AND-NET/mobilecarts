@@ -47,22 +47,22 @@
                 <div class="clearfix"></div>
                 <br />
                 <div class="col-lg-4">
-                        <label id="l_id_convenio">Convenio</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-user"></i>
-                            </div>
-                            <select class="form-control select2" id="id_convenio" name="id_convenio">
-                                <option value="0">[No aplica..]</option>
-                                <?php foreach ($data["convenios"] as $c) { ?>
-                                    <option <?= ($a->id_convenio == $c->id ? 'selected="selected"' : ''); ?> value="<?= $c->id; ?>"><?= $c->razon_social; ?></option>
-                                <?php } ?>
-                            </select>
+                    <label id="l_id_convenio">Convenio</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-user"></i>
                         </div>
+                        <select class="form-control select2" id="id_convenio" name="id_convenio">
+                            <option value="0">[No aplica..]</option>
+                            <?php foreach ($data["convenios"] as $c) { ?>
+                                <option <?= ($a->id_convenio == $c->id ? 'selected="selected"' : ''); ?> value="<?= $c->id; ?>"><?= $c->razon_social; ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
+                </div>
 
 
-                    <div class="clearfix"></div><br />
+                <div class="clearfix"></div><br />
 
 
                 <!-- ----------------------------------------LICENCIA TRANSITO ----------------------------------------------- -->
@@ -259,14 +259,14 @@
                             <input type="text" class="form-control pull-right" value="<?= $a->chasis; ?>" id="chasis" name="chasis" maxlength="20">
                         </div>
                     </div>
-                    
+
                     <div class="clearfix"></div><br />
 
                     <div class="col-lg-3">
                         <label id="l_numSerie">No. Serie</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                            <i class="fa fa-text-width"></i>
+                                <i class="fa fa-text-width"></i>
                             </div>
                             <input type="text" class="form-control pull-right" value="<?= $a->numSerie; ?>" id="numSerie" name="numSerie" maxlength="20">
                         </div>
@@ -304,11 +304,11 @@
 
                     <div class="clearfix"></div><br />
 
-                    </fieldset>
+                </fieldset>
 
                 <div class="clearfix"></div><br />
-                
-                    <!-- <fieldset>
+
+                <!-- <fieldset>
                     <legend>Polizas</legend>
                     <div class="col-lg-3">
                         <label id="l_n_contra">No. Contractual</label>
@@ -374,30 +374,31 @@
                         </div>
                     </div>
                 </fieldset>      -->
-                    <div class="clearfix"></div>
-                    <br />
-                    <fieldset>
-                        <legend>Conductores</legend>
-                        <div class="col-lg-4">
-                            <label id="l_id_propietario">Nombre</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-user"></i>
-                                </div>
-                                <select class="form-control select2" id="id_conductor" name="id_conductor">
-                                    <option value="">[Seleccione..]</option>
-                                    <?php foreach ($data["conductore"] as $c) { ?>
-                                        <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
-                                    <?php } ?>
-                                </select>
+                <div class="clearfix"></div>
+                <br />
+                <fieldset>
+                    <legend>Conductores</legend>
+                    <div class="col-lg-4">
+                        <label id="l_id_propietario">Nombre</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-user"></i>
                             </div>
+                            <select class="form-control select2" id="id_conductor" name="id_conductor">
+                                <option value="">[Seleccione..]</option>
+                                <?php foreach ($data["conductore"] as $c) { ?>
+                                    <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
-                        <div class="col-lg-4">
-                            <br />
-                            <button type="button" id="btn-addConduct" class="btn btn-primary">Agregar</button>
-                        </div>
-                        <div class="clearfix"></div>
-                        <br /><br />
+                    </div>
+                    <div class="col-lg-4">
+                        <br />
+                        <button type="button" id="btn-addConduct" class="btn btn-primary">Agregar</button>
+                    </div>
+                    <div class="clearfix"></div>
+                    <br /><br />
+                    <div class="table-responsive" style="width: auto;">
                         <table id="tabledatas" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -421,14 +422,15 @@
                                 </tr>
                             </tfoot>
                         </table>
-                    </fieldset>
-                    <div class="box-footer col-lg-2 pull-right">
-                        <button type="button" id="btn-cancel" class="btn bg-grey btn-default">Cancelar</button>
-                        <button type="button" id="btn-save" class="btn  bg-green pull-right">Guardar</button>
-                        <input name="id" type="hidden" id="id" value="<?= $a->id; ?>" />
-                        <input id="deleted" name="deleted" type="hidden" value="0" />
                     </div>
                 </fieldset>
+                <div class="box-footer col-lg-2 pull-right">
+                    <button type="button" id="btn-cancel" class="btn bg-grey btn-default">Cancelar</button>
+                    <button type="button" id="btn-save" class="btn  bg-green pull-right">Guardar</button>
+                    <input name="id" type="hidden" id="id" value="<?= $a->id; ?>" />
+                    <input id="deleted" name="deleted" type="hidden" value="0" />
+                </div>
+            </fieldset>
         </div>
     </form>
 </div>

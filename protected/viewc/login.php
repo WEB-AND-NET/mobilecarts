@@ -107,8 +107,8 @@ $patch = $data['rootUrl'];
         </script>
         <script type="text/javascript">
             $.backstretch([
-                "global/img/login/backgrounds/1.jpg",
-                "global/img/login/backgrounds/2.jpg",
+                "global/img/login/backgrounds/3.jpeg",
+                "global/img/login/backgrounds/18.jpg",
             ], {
                 fade: 1000,
                 duration: 7000

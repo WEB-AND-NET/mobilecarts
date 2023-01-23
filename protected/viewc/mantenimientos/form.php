@@ -120,7 +120,7 @@
                                 <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
                             <?php } ?>
                         </select>
-                        
+
                     </div>
                 </div>
 
@@ -152,25 +152,27 @@
                 <div class="clearfix"></div>
                 <br />
 
-                <table id="tabledatas" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Actividad</th>
-                            <th scope="col">Anotaciones</th>
-                            <th scope="col">Costo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="items">
-                        <tr>
-                        <td class="ch-message-information" colspan="5">Cargando lista de actividades</td>
-                        </tr>
-                       
+                <div class="table-responsive" style="width: auto;">
+                    <table id="tabledatas" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Actividad</th>
+                                <th scope="col">Anotaciones</th>
+                                <th scope="col">Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items">
+                            <tr>
+                                <td class="ch-message-information" colspan="5">Cargando lista de actividades</td>
+                            </tr>
 
 
 
-                    </tbody>
-                    
-                </table>
+
+                        </tbody>
+
+                    </table>
+                </div>
             </fieldset>
 
             <div class="box-footer col-lg-2 pull-right">
@@ -193,8 +195,6 @@
 <script type="text/javascript" src="<?= $patch; ?>global/js/form.js"></script>
 
 <script type="text/javascript">
-
-
     function validateForm() {
 
         var sErrMsg = "";

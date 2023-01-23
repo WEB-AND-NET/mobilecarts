@@ -17,6 +17,24 @@ $login = $_SESSION['login'];
         </a>
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+            <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-car"></i>
+                        <span id="push-checklist-i" class="label label-danger"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li id="push-checklist-h" class="header"></li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul id="push-checklist" class="menu">
+                                <li></li>
+                            </ul>
+                        </li>
+                        <li id="footer-checklist" class="header">
+                            <a href='<?php echo $patch ?>checklist'>Ver todos los checklist</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-clock-o"></i>

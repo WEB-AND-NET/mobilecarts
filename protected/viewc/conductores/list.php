@@ -18,7 +18,7 @@
                         <div class="btn-group">
                             <a href="<?= $patch; ?>conductores/add" id="btn-add" class="btn btn-default btn-md"><i class="fa fa-plus-circle"></i><br /><span>Nuevo</span></a>
                             <a href="<?= $patch; ?>conductores/edit" id="btn-edit" class="btn btn-default btn-md"><i class="fa fa-edit"></i><br /><span>Editar</span></a>
-                            <a href="<?= $patch; ?>conductores/curriculum" id="btn-cv"class="btn btn-default btn-md" target="_blank"><i class="fa fa-book"></i><br/><span>Hoja de vida</span></a>
+                            <a href="<?= $patch; ?>conductores/curriculum" id="btn-cv" class="btn btn-default btn-md" target="_blank"><i class="fa fa-book"></i><br /><span>Hoja de vida</span></a>
                             <a href="<?= $patch; ?>conductores/documents/view" id="btn-documents" class="btn btn-default btn-md"><i class="fa fa-archive"></i><br /><span>Documentos</span></a>
                             <?php if ($data['role'] == "1" || $data['role'] == '2') { ?>
                                 <a href="<?= $data['rootUrl']; ?>conductores/activate" id="btn-activate" class="btn btn-default btn-md"><i class="fa fa-check"></i><br /><span>Activar</span></a>
@@ -29,77 +29,79 @@
                     </div>
                     <div class="clearfix"></div>
 
-                    <table id="tabledatas" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Identificaci&oacute;n</th>
-                                <th>Nombre</th>
-                                <th>Celular</th>
-                                <th>Email</th>
-                                <th>Tipo</th>
-                                <th>Propietario</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($data["conductores"] as $r) {
-                            ?>
+                    <div class="table-responsive" style="width: auto;">
+                        <table id="tabledatas" class="table table-bordered table-striped">
+                            <thead>
                                 <tr>
-                                    <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
-                                    <td><?= $r['identificacion']; ?></td>
-                                    <td><?= $r['nombre']; ?></td>
-                                    <td><?= $r['celular']; ?></td>
-                                    <td><?= $r['email']; ?></td>
-                                    <td>
+                                    <th>&nbsp;</th>
+                                    <th>Identificaci&oacute;n</th>
+                                    <th>Nombre</th>
+                                    <th>Celular</th>
+                                    <th>Email</th>
+                                    <th>Tipo</th>
+                                    <th>Propietario</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($data["conductores"] as $r) {
+                                ?>
+                                    <tr>
+                                        <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
+                                        <td><?= $r['identificacion']; ?></td>
+                                        <td><?= $r['nombre']; ?></td>
+                                        <td><?= $r['celular']; ?></td>
+                                        <td><?= $r['email']; ?></td>
+                                        <td>
+                                            <?php
+                                            switch ($r['tipo']) {
+                                                case "F":
+                                                    $txt = "FIJO";
+                                                    break;
+                                                case "A":
+                                                    $txt = "AFILIADO";
+                                                    break;
+                                                case "C":
+                                                    $txt = "CONVENIO";
+                                                    break;
+                                                default:
+                                                    $txt = "";
+                                            }
+                                            echo $txt;
+                                            ?>
+                                        </td>
+
+                                        <td><?= isset($r['propietario']) ? $r['propietario'] : "" ?></td>
+
                                         <?php
-                                        switch ($r['tipo']) {
-                                            case "F":
-                                                $txt = "FIJO";
-                                                break;
-                                            case "A":
-                                                $txt = "AFILIADO";
-                                                break;
-                                            case "C":
-                                                $txt = "CONVENIO";
-                                                break;
-                                            default:
-                                                $txt = "";
-                                        }
-                                        echo $txt;
-                                        ?>
-                                    </td>
-                                    
-                                    <td><?= isset($r['propietario']) ?$r['propietario']:"" ?></td>
-                                    
-                                    <?php
                                         $txt = "Activo";
                                         $style = "label label-success";
-                                        if($r['estado_c_p'] === "I"){
-                                          $txt = "Inactivo"; 
-                                          $style = "label label-danger";
+                                        if ($r['estado_c_p'] === "I") {
+                                            $txt = "Inactivo";
+                                            $style = "label label-danger";
                                         }
-                                    ?>
-                                    <td><span class="label <?= $style ?>"><?= $txt ?></span></td>
-                                    
-                                    
+                                        ?>
+                                        <td><span class="label <?= $style ?>"><?= $txt ?></span></td>
+
+
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>Identificaci&oacute;n</th>
+                                    <th>Nombre</th>
+                                    <th>Celular</th>
+                                    <th>Email</th>
+                                    <th>Tipo</th>
+                                    <th>Propietario</th>
+                                    <th>Estado</th>
                                 </tr>
-                            <?php } ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Identificaci&oacute;n</th>
-                                <th>Nombre</th>
-                                <th>Celular</th>
-                                <th>Email</th>
-                                <th>Tipo</th>
-                                <th>Propietario</th>
-                                <th>Estado</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>
@@ -163,18 +165,19 @@
             $(this).attr("href", action);
         }
     });
-    
-    $('#btn-cv').click(function (e) {
+
+    $('#btn-cv').click(function(e) {
         item = $('input[name=item]:checked').attr('value');
         if (!item) {
             alert('Debe seleccionar un item');
             e.preventDefault();
-        }
-        else {
+        } else {
             var action = $(this).attr("href") + "/" + item;
             $(this).attr("href", action);
-            setTimeout(() => {  location.reload(); }, 3000);
-            
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+
         }
     });
 
