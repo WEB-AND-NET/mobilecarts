@@ -1,6 +1,6 @@
 <link href="<?= $patch ?>global/admin/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 
-<?= $hoy = date("Y-m-d");?>
+<?= $hoy = date("Y-m-d"); ?>
 
 <section class="content-header">
     <h1>
@@ -19,51 +19,72 @@
                     <div class="mailbox-controls" style="float:right;">
                         <!-- Check all button -->
                         <div class="btn-group">
-                        <a href="<?= $patch; ?>mantenimientos/add/<?php echo $data['id']?>" id="btn-new"class="btn btn-default btn-md"><i class="fa fa-archive"></i><br/><span>Nuevo</span></a>
+                            <a href="<?= $patch; ?>mantenimientos/add/<?php echo $data['id'] ?>" id="btn-new" class="btn btn-default btn-md"><i class="fa fa-archive"></i><br /><span>Nuevo</span></a>
                             <a href="<?= $patch; ?>mantenimientos/edit" id="btn-edit" class="btn btn-default btn-md"><i class="fa fa-edit"></i><br /><span>Editar</span></a>
-                            <a href="<?= $patch; ?>mantenimientos/finish"  id="btn-finish" class="btn btn-default btn-md"><i class="fa fa-check-square-o"></i><br /><span>Finalizar</spa></a>
+                            <a href="<?= $patch; ?>mantenimientos/finish" id="btn-finish" class="btn btn-default btn-md"><i class="fa fa-check-square-o"></i><br /><span>Finalizar</spa></a>
                         </div><!-- /.btn-group -->
                     </div>
                     <div class="clearfix"></div>
 
-                    <table id="tabledatas" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Tipo</th>
-                                <th>Prog. fecha</th>
-                                <th>Prog. Km</th>
-                                <th>Factura</th>
-                                <th>Fecha finalizacion</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($data["mantenimientos"] as $r) {
-                            ?>
+                    <div class="table-responsive" style="width: auto;">
+                        <table id="tabledatas" class="table table-bordered table-striped">
+                            <thead>
                                 <tr>
-                                    <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
-                                    <td><?php switch ($r['tipo']){ case "PRE": echo "Preventivo"; break; case "COR": echo "Correctivo"; break; case "EVO": echo "Evolutivo"; break; case "ADA": echo "Adaptativo"; break; case "OTR": echo "Otro"; break; default: echo $r['tipo']; break;} ?></td>
-                                    <td><?= $r['fecha']; ?></td>
-                                    <td><?= $r['km']; ?></td>
-                                    <td><a target="_blank" href="<?php echo $data['rootUrl'] ?>documentacion/FacturasMantenimientos/<?php echo $r['archivoFactura'] != "" ? $r['archivoFactura'] : "NA.JPG" ?>">Ver</a></td>
-                                    <td><?= $r['fechaCierre']; ?></td>
-                                    <td style="background-color: <?= $r['estado'] == 'T' ? 'green;'  : ($r['fecha'] < $hoy  ? 'red;' : '#fcaf5d;');?> color: white;"><?= $r['estado'] == 'P' ? 'Programado' : 'Terminado'; ?></td>
+                                    <th>&nbsp;</th>
+                                    <th>Tipo</th>
+                                    <th>Prog. fecha</th>
+                                    <th>Prog. Km</th>
+                                    <th>Factura</th>
+                                    <th>Fecha finalizacion</th>
+                                    <th>Estado</th>
                                 </tr>
-                            <?php } ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Tipo</th>
-                                <th>Programado</th>
-                                <th>Factura</th>
-                                <th>Fecha finalizacion</th>
-                                <th>Estado</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($data["mantenimientos"] as $r) {
+                                ?>
+                                    <tr>
+                                        <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
+                                        <td><?php switch ($r['tipo']) {
+                                                case "PRE":
+                                                    echo "Preventivo";
+                                                    break;
+                                                case "COR":
+                                                    echo "Correctivo";
+                                                    break;
+                                                case "EVO":
+                                                    echo "Evolutivo";
+                                                    break;
+                                                case "ADA":
+                                                    echo "Adaptativo";
+                                                    break;
+                                                case "OTR":
+                                                    echo "Otro";
+                                                    break;
+                                                default:
+                                                    echo $r['tipo'];
+                                                    break;
+                                            } ?></td>
+                                        <td><?= $r['fecha']; ?></td>
+                                        <td><?= $r['km']; ?></td>
+                                        <td><a target="_blank" href="<?php echo $data['rootUrl'] ?>documentacion/FacturasMantenimientos/<?php echo $r['archivoFactura'] != "" ? $r['archivoFactura'] : "NA.JPG" ?>">Ver</a></td>
+                                        <td><?= $r['fechaCierre']; ?></td>
+                                        <td style="background-color: <?= $r['estado'] == 'T' ? 'green;'  : ($r['fecha'] < $hoy  ? 'red;' : '#fcaf5d;'); ?> color: white;"><?= $r['estado'] == 'P' ? 'Programado' : 'Terminado'; ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>Tipo</th>
+                                    <th>Programado</th>
+                                    <th>Factura</th>
+                                    <th>Fecha finalizacion</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>

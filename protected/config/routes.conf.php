@@ -531,7 +531,12 @@ $route['*']['/pasajeros/remove'] = array('PasajerosController', 'remove');
 
 $route['*']['/checklist'] = array('ChecklistController', 'index');
 $route['*']['/checklist/add'] = array('ChecklistController', 'add');
+$route['*']['/checklist/semanal'] = array('ChecklistController', 'semanal');
 $route['*']['/checklist/last'] = array('ChecklistController', 'lastCheck');
 $route['*']['/checklist/save'] = array('ChecklistController', 'save');
 $route['*']['/checklist/report/:pindex'] = array('ChecklistController', 'report');
+$route['*']['/checklist/reports'] = array('ChecklistController', 'report');
+$route['*']['/checklist/reportsemanal'] = array('ChecklistController', 'reportSemanal');
+$route['*']['/checklist/pendientes'] = array('ChecklistController', 'pendientes');
+$route['*']['/checklist/openNotify/:pindex'] = array('ChecklistController', 'openNotify');
 

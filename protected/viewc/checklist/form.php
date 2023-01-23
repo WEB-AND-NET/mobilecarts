@@ -1099,6 +1099,48 @@ $login = $_SESSION['login'];
                 </div>
 
                 <div class="row">
+
+                <!-- Tabla otros-->
+                    <div class="form-group col-xs-12 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Fallos no listados*</strong>
+                            </div>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Opcion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Otros &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="44" id="otrosok" value="OK" required>
+                                                    <label class="form-check-label" for="otrosok">OK</label>
+
+                                                    <input class="form-check-input" type="radio" name="44" id="otrosobs" value="Fallo">
+                                                    <label class="form-check-label" for="otrosobs">Observacion</label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="observacionotros" style="display:none">
+                                        <td colspan="2">
+                                            <input class="form-control" type="text" name="observacion44" placeholder="Escriba la observacion" id="44">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <!--Fecha de vencimiento botiquin-->
                     <div class="form-group col-xs-6 col-sm-4">
                         <label for="venc_botiquin"><strong>Fecha vencimiento de Botiquin*</strong></label>
@@ -1966,4 +2008,22 @@ $login = $_SESSION['login'];
 
     linternaok.addEventListener('change', updateStatuslinterna)
     linternaobs.addEventListener('change', updateStatuslinterna)
+</script>
+
+<!--Script Otros-->
+<script>
+    var otrosobs = document.getElementById('otrosobs');
+    var otrosok = document.getElementById('otrosok')
+    var observacionotros = document.getElementById('observacionotros')
+
+    function updateStatuslinterna() {
+        if (otrosobs.checked) {
+            observacionotros.style.display = "";
+        } else {
+            observacionotros.style.display = "none";
+        }
+    }
+
+    otrosok.addEventListener('change', updateStatuslinterna)
+    otrosobs.addEventListener('change', updateStatuslinterna)
 </script>

@@ -148,11 +148,11 @@
                             </div>
                             <select class="form-control select2" id="servicio" name="servicio">
                                 <option value="" selected="">-- Seleccione --</option>
-                                <option value="PARTICULAR" <?= $a->servicio == 'PARTICULAR' ? 'selected' : '';?> >PARTICULAR</option>
-                                <option value="PÚBLICO" <?= $a->servicio == 'PÚBLICO' ? 'selected' : '';?>>PÚBLICO</option>
-                                <option value="DIPLOMÁTICO" <?= $a->servicio == 'DIPLOMÁTICO' ? 'selected' : '';?>>DIPLOMÁTICO</option>
-                                <option value="OFICIAL" <?= $a->servicio == 'OFICIAL' ? 'selected' : '';?>>OFICIAL</option>
-                                <option value="ESPECIAL RNMA" <?= $a->servicio == 'ESPECIAL RNMA' ? 'selected' : '';?>>ESPECIAL RNMA</option>
+                                <option value="PARTICULAR" <?= $a->servicio == 'PARTICULAR' ? 'selected' : ''; ?>>PARTICULAR</option>
+                                <option value="PÚBLICO" <?= $a->servicio == 'PÚBLICO' ? 'selected' : ''; ?>>PÚBLICO</option>
+                                <option value="DIPLOMÁTICO" <?= $a->servicio == 'DIPLOMÁTICO' ? 'selected' : ''; ?>>DIPLOMÁTICO</option>
+                                <option value="OFICIAL" <?= $a->servicio == 'OFICIAL' ? 'selected' : ''; ?>>OFICIAL</option>
+                                <option value="ESPECIAL RNMA" <?= $a->servicio == 'ESPECIAL RNMA' ? 'selected' : ''; ?>>ESPECIAL RNMA</option>
 
                             </select>
                         </div>
@@ -293,7 +293,7 @@
                         <label id="l_motor">No. Motor</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                            <i class="fa fa-text-width"></i>
+                                <i class="fa fa-text-width"></i>
                             </div>
                             <input type="text" class="form-control pull-right" value="<?= $a->motor; ?>" id="motor" name="motor" maxlength="20">
                         </div>
@@ -303,7 +303,7 @@
                         <label id="l_chasis">No. Chasis</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                            <i class="fa fa-text-width"></i>
+                                <i class="fa fa-text-width"></i>
                             </div>
                             <input type="text" class="form-control pull-right" value="<?= $a->chasis; ?>" id="chasis" name="chasis" maxlength="20">
                         </div>
@@ -315,7 +315,7 @@
                         <label id="l_numSerie">No. Serie</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                            <i class="fa fa-text-width"></i>
+                                <i class="fa fa-text-width"></i>
                             </div>
                             <input type="text" class="form-control pull-right" value="<?= $a->numSerie; ?>" id="numSerie" name="numSerie" maxlength="20">
                         </div>
@@ -430,7 +430,7 @@
                             <select class="form-control select2" id="id_conductor" name="id_conductor">
                                 <option value="">[Seleccione..]</option>
                                 <?php foreach ($data["conductore"] as $c) { ?>
-                                    <option value="<?= $c->id; ?>"><?= $c->nombre.' '.$c->apellidos; ?></option>
+                                    <option value="<?= $c->id; ?>"><?= $c->nombre . ' ' . $c->apellidos; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -441,29 +441,31 @@
                     </div>
                     <div class="clearfix"></div>
                     <br /><br />
-                    <table id="tabledatas" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Tel&eacute;fono</th>
-                                <th>Direcci&oacute;n</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody id="items">
-                            <tr>
-                                <td class="ch-message-information" colspan="5">Cargando lista de conductores</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <div class="table-responsive" style="width: auto;">
+                        <table id="tabledatas" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tel&eacute;fono</th>
+                                    <th>Direcci&oacute;n</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items">
+                                <tr>
+                                    <td class="ch-message-information" colspan="5">Cargando lista de conductores</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </fieldset>
                 <div class="box-footer col-lg-2 pull-right">
                     <button type="button" id="btn-cancel" class="btn bg-grey btn-default">Cancelar</button>
@@ -494,7 +496,7 @@
     });
 
     // Boton para agregar y validar al momento de selecconar un conductor
-    $('#btn-addConduct').click(function () {
+    $('#btn-addConduct').click(function() {
         if (validateFormConductor()) {
             validarConductor();
         }
@@ -506,8 +508,7 @@
         var sErrMsg = "";
         var flag = true;
         sErrMsg += ($('#id_conductor').val() === "" ? '- Debe seleccionar Un Conductor.\n' : '');
-        if (sErrMsg !== "") 
-        {
+        if (sErrMsg !== "") {
             alert(sErrMsg);
             flag = false;
         }
@@ -520,7 +521,7 @@
         $.post('<?= $patch; ?>vehiculos/validarConductores', {
                 id_conductor: $('#id_conductor').val()
             },
-            function (data) {
+            function(data) {
                 $("#form1").unmask();
                 if (data) {
                     alert('El Conductor ' + $('#id_conductor option:selected').text() + ' ya se encuentra registrado ..');

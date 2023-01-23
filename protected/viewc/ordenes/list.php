@@ -32,90 +32,92 @@ $rol = $login->role;
                     </div>
                     <div class="clearfix"></div>
 
-                    <table id="tabledatas" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Fecha(Mes/Día/Año)</th>
-                                <th>Factura</th>
-                                <th>Cliente</th>
-                                <th>T.Servicio</th>
-                                <th>Punto de Origen</th>
-                                <th>Direcci&oacute;n</th>
-                                <th>Punto de Destino</th>
-                                <th>Clase de Vehiculo</th>
-                                <th>Placa</th>
-                                <th>Conductor</th>
-                                <th>Estado</th>
-                                <th>Registro(Mes/Día/Año)</th>
-                            </tr>
-                        </thead>
-                        <!--
-                        <tbody>
-                            <?php /*
-                            foreach ($data["ordenes"] as $r) {
-                                ?>
+                    <div class="table-responsive" style="width: auto;">
+                        <table id="tabledatas" class="table table-bordered table-striped" style="width: 99%;">
+                            <thead>
                                 <tr>
-                                    <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
-                                    <td><?= $r['fecha']; ?></td>
-                                    <td><?= $r['cliente']; ?></td>
-                                    <td><?= $r['tipo']== "D" ? 'Disponibilidad' : 'Transfers'?> </td>
-                                    <td><?= $r['barrio_o']; ?></td>
-                                    <td><?= $r['origen']; ?></td>
-                                    <td><?= $r['barrio_d']; ?></td>
-                                    <td><?= $r['clase_vehiculo']; ?></td>
-                                    <td><?= $r['placa']; ?></td>          
-                                    <?php                                        
-                                        switch ($r['estado']) {
-                                            case 'P':
-                                                $styl="label label-warning";
-                                                $txt = "PENDIENTE";
-                                                break;
-                                            case 'A':
-                                                $styl="label label-default";
-                                                $txt = "ASIGNADO";
-                                                break;
-                                            case 'I':
-                                                $styl="label label-primary";
-                                                $txt = "ACEPTADO";
-                                                break; 
-                                            case 'T':
-                                                $styl="label label-success";
-                                                $txt = "TERMINADO";
-                                                break; 
-                                            case 'C':
-                                                $styl="label label-danger";
-                                                $txt = "CANCELADO";
-                                                break;   
-                                            case 'F':
-                                                $styl="label label-success";
-                                                $txt = "FACTURADO";
-                                                break;     
-                                            default:
-                                                $txt = "";
-                                                break;
-                                        } 
-                                        echo '<td><span class="label '.$styl.'">'.$txt.'</span></td>';
-                                    ?>
+                                    <th>&nbsp;</th>
+                                    <th>Fecha(Mes/Día/Año)</th>
+                                    <th>Factura</th>
+                                    <th>Cliente</th>
+                                    <th>T.Servicio</th>
+                                    <th>Punto de Origen</th>
+                                    <th>Direcci&oacute;n</th>
+                                    <th>Punto de Destino</th>
+                                    <th>Clase de Vehiculo</th>
+                                    <th>Placa</th>
+                                    <th>Conductor</th>
+                                    <th>Estado</th>
+                                    <th>Registro(Mes/Día/Año)</th>
                                 </tr>
-                            <?php } */ ?>
-                        </tbody>
-                        -->
-                        <!--<tfoot>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Fecha(Mes/Día/Año)</th>
-                                <th>Cliente</th>
-                                <th>T.Servicio</th>
-                                <th>Punto de Origen</th>
-                                <th>Direcci&oacute;n</th>
-                                <th>Punto de Destino</th>
-                                <th>Clase de Vehiculo</th>
-                                <th>Placa</th>
-                                <th>Estado</th>
-                            </tr>
-                        </tfoot>-->
-                    </table>
+                            </thead>
+                            <!--
+                            <tbody>
+                                <?php /*
+                                foreach ($data["ordenes"] as $r) {
+                                    ?>
+                                    <tr>
+                                        <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
+                                        <td><?= $r['fecha']; ?></td>
+                                        <td><?= $r['cliente']; ?></td>
+                                        <td><?= $r['tipo']== "D" ? 'Disponibilidad' : 'Transfers'?> </td>
+                                        <td><?= $r['barrio_o']; ?></td>
+                                        <td><?= $r['origen']; ?></td>
+                                        <td><?= $r['barrio_d']; ?></td>
+                                        <td><?= $r['clase_vehiculo']; ?></td>
+                                        <td><?= $r['placa']; ?></td>          
+                                        <?php                                        
+                                            switch ($r['estado']) {
+                                                case 'P':
+                                                    $styl="label label-warning";
+                                                    $txt = "PENDIENTE";
+                                                    break;
+                                                case 'A':
+                                                    $styl="label label-default";
+                                                    $txt = "ASIGNADO";
+                                                    break;
+                                                case 'I':
+                                                    $styl="label label-primary";
+                                                    $txt = "ACEPTADO";
+                                                    break; 
+                                                case 'T':
+                                                    $styl="label label-success";
+                                                    $txt = "TERMINADO";
+                                                    break; 
+                                                case 'C':
+                                                    $styl="label label-danger";
+                                                    $txt = "CANCELADO";
+                                                    break;   
+                                                case 'F':
+                                                    $styl="label label-success";
+                                                    $txt = "FACTURADO";
+                                                    break;     
+                                                default:
+                                                    $txt = "";
+                                                    break;
+                                            } 
+                                            echo '<td><span class="label '.$styl.'">'.$txt.'</span></td>';
+                                        ?>
+                                    </tr>
+                                <?php } */ ?>
+                            </tbody>
+                            -->
+                            <!--<tfoot>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>Fecha(Mes/Día/Año)</th>
+                                    <th>Cliente</th>
+                                    <th>T.Servicio</th>
+                                    <th>Punto de Origen</th>
+                                    <th>Direcci&oacute;n</th>
+                                    <th>Punto de Destino</th>
+                                    <th>Clase de Vehiculo</th>
+                                    <th>Placa</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </tfoot>-->
+                        </table>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>

@@ -283,7 +283,8 @@
                 <div id="renderconductores" style="display: block;">                                    
                     <div class="col-lg-4" id="pdestino">
                         <label id="l_conductores">Conductores</label>
-                        <table id="tabledatas" class="table table-bordered table-striped">
+                        <div class="table-responsive" style="width: auto;"> 
+<table id="tabledatas" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -304,13 +305,15 @@
                                 </tr>
                             </tfoot>
                         </table>
+                        </div>
                     </div>                 
                 </div>
                 <div class="clearfix"></div>
                 <div id="renderparadas" style="display: block;">
                     <div class="col-lg-4" id="paradas">
                         <label id="l_barrios">Paradas</label>
-                        <table id="tabledatas2" class="table table-bordered table-striped">
+                        <div class="table-responsive" style="width: auto;"> 
+<table id="tabledatas2" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -327,6 +330,7 @@
                                 </tr>
                             </tfoot>
                         </table>
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix"></div>

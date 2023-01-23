@@ -81,6 +81,23 @@ class ChecklistController extends DooController
         }
     }
 
+    public function semanal()
+    {
+        $login = $_SESSION['login'];
+        $rol = $login->role;
+        
+        $this->data['rootUrl'] = Doo::conf()->APP_URL;
+        $this->data['content'] = 'checklist/reporte.php';
+
+        if ($rol != "1") {
+            $this->data['vehiculos'] = Doo::db()->query("SELECT v.id,v.placa FROM vehiculos v WHERE v.deleted=0 AND v.id_propietario = $login->id_usuario")->fetchAll();
+            $this->renderc('index_propietarios', $this->data, true);
+        } else {
+            $this->data['vehiculos'] = Doo::db()->query("SELECT v.id,v.placa FROM vehiculos v  WHERE v.deleted=0")->fetchAll();
+            $this->renderc('index', $this->data, true);
+        }
+    }
+
     public function lastCheck()
     {
         $id_veh = $_POST["id_veh"];
@@ -157,4 +174,67 @@ class ChecklistController extends DooController
 
         $pdf->Output();
     }
+
+    public function reportSemanal()
+    {
+        $datos = $_POST;
+        $idVeh = $datos["id_vehiculo"];
+        $fechaIni = $datos["fechaIni"];
+        $fechaFin = $datos["fechaFin"];
+
+        Doo::loadClass("pdf/fpdf");
+
+        Doo::loadClass("reportes/ChecklistSemanal");       
+
+        $sql = "SELECT r.id, DAYOFWEEK(r.fecha), r.creacion, rsc.nombre, rd.estado, rd.observacion  FROM revision_diara r 
+        LEFT JOIN revision_details rd ON rd.id_revision = r.id 
+        LEFT JOIN revision_subcategoria rsc ON rsc.id = rd.id_subcategoria 
+        WHERE r.id_vehiculo = $idVeh AND r.fecha BETWEEN '$fechaIni' AND '$fechaFin'";
+        $sqlGroupBy = "GROUP BY DAYOFWEEK(r.fecha), rsc.nombre";
+
+        $lunes =  Doo::db()->query($sql." AND DAYOFWEEK(r.fecha) = 2 ".$sqlGroupBy)->fetchAll();
+        $martes =  Doo::db()->query($sql." AND DAYOFWEEK(r.fecha) = 3 ".$sqlGroupBy)->fetchAll();
+        $miercoles =  Doo::db()->query($sql." AND DAYOFWEEK(r.fecha) = 4 ".$sqlGroupBy)->fetchAll();
+        $jueves =  Doo::db()->query($sql." AND DAYOFWEEK(r.fecha) = 5 ".$sqlGroupBy)->fetchAll();
+        $viernes =  Doo::db()->query($sql." AND DAYOFWEEK(r.fecha) = 6 ".$sqlGroupBy)->fetchAll();
+        $sabado =  Doo::db()->query($sql." AND DAYOFWEEK(r.fecha) = 7 ".$sqlGroupBy)->fetchAll();
+        $domingo =  Doo::db()->query($sql." AND DAYOFWEEK(r.fecha) = 1 ".$sqlGroupBy)->fetchAll();
+
+        $details = Doo::db()->query("SELECT rc.nombre AS categoria, rsc.nombre AS subcategoria FROM  revision_subcategoria rsc 
+        LEFT JOIN revision_categoria rc ON rsc.id_categoria = rc.id")->fetchAll();
+
+        $placa = Doo::db()->query("SELECT v.placa FROM vehiculos v  WHERE v.id=$idVeh")->fetch();
+
+        $pdf = new ChecklistSemanal('P','mm','A4');
+        $pdf->placa=$placa["placa"];
+        $pdf->fecha=$fechaIni . " a " .$fechaFin;
+        $pdf->AliasNbPages();
+
+        $pdf->AddPage();
+
+        $pdf->SetFont('Times','B',8);
+
+        
+        $pdf->Body($details, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo);
+
+
+        $pdf->Output();
+    }
+
+    public function pendientes(){
+        $revision = Doo::db()->query("SELECT r.id, r.fecha, v.placa, CONCAT(c.nombre, ' ',c.apellidos) AS conductor, r.observaciones FROM revision_diara r 
+        INNER JOIN revision_details rd ON rd.id_revision = r.id AND rd.notificar = 1
+        LEFT JOIN conductores c ON r.id_conductor = c.id 
+        LEFT JOIN vehiculos v ON r.id_vehiculo = v.id GROUP BY r.id")->fetchAll();
+
+        echo json_encode($revision);
+    }
+
+    public function openNotify(){
+
+        $id = $this->params['pindex'];
+
+        Doo::db()->query("UPDATE revision_details SET notificar = 2 WHERE id_revision = '$id' ");
+
+        return Doo::conf()->APP_URL."checklist/report/".$id;    }
 }

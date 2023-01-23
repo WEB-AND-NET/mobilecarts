@@ -289,29 +289,31 @@
                         </div>
                         <div class="clearfix"></div>
                         <br /><br />
-                        <table id="tabledatas" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Tel&eacute;fono</th>
-                                    <th>Direcci&oacute;n</th>
-                                    <th>Email</th>
-                                </tr>
-                            </thead>
-                            <tbody id="items">
-                                <tr>
-                                    <td class="ch-message-information" colspan="5">Cargando lista de conductores</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>&nbsp;</th>
-                                    <th>&nbsp;</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                        <div class="table-responsive" style="width: auto;">
+                            <table id="tabledatas" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Tel&eacute;fono</th>
+                                        <th>Direcci&oacute;n</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="items">
+                                    <tr>
+                                        <td class="ch-message-information" colspan="5">Cargando lista de conductores</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>&nbsp;</th>
+                                        <th>&nbsp;</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                     <div class="clearfix"></div>
 
@@ -442,74 +444,74 @@
 
             $("select#id_vehiculo").change(function() {
                 //if ($("select#id_vehiculo option:selected").attr("data-valido") === "A") {
-                    let message = "";
-                    $.post('<?= $patch; ?>vehiculos/documents/getDocumentosVencidos', {
-                        id_vehiculo: $('#id_vehiculo').val()
-                    }, function(data) {
-                        let html = "<tr>";
-                        let open = false;
-                        data.forEach(function(docu) {
-                            if (docu.estado == 'I') {
-                                open = true;
-                                html += `
+                let message = "";
+                $.post('<?= $patch; ?>vehiculos/documents/getDocumentosVencidos', {
+                    id_vehiculo: $('#id_vehiculo').val()
+                }, function(data) {
+                    let html = "<tr>";
+                    let open = false;
+                    data.forEach(function(docu) {
+                        if (docu.estado == 'I') {
+                            open = true;
+                            html += `
                         <td>${ docu.tipo}</td>
                         <td>${ docu.estado == "I"  ? "Inactivo" : "Activo" }</td>
                         <td>${ docu.fecha_vencimiento}</td>
                         `;
 
-                                if (docu.estado == "I" && docu.fecha_vencimiento != null) {
-                                    html += `<td>No ha sido aprobado</td>`
-                                };
-                                if (docu.estado == "I" && docu.fecha_vencimiento == null) {
-                                    html += `<td>No ha sido subido</td>`
-                                };
+                            if (docu.estado == "I" && docu.fecha_vencimiento != null) {
+                                html += `<td>No ha sido aprobado</td>`
+                            };
+                            if (docu.estado == "I" && docu.fecha_vencimiento == null) {
+                                html += `<td>No ha sido subido</td>`
+                            };
 
 
-                                html += `</tr>`
-                            } else {
+                            html += `</tr>`
+                        } else {
 
-                                if (docu.fecha_vencimiento != null) {
-                                    var fecha = new Date();
-                                    const vence = new Date(docu.fecha_vencimiento);
-                                    if (fecha > vence) {
-                                        open = true;
-                                        html += `
+                            if (docu.fecha_vencimiento != null) {
+                                var fecha = new Date();
+                                const vence = new Date(docu.fecha_vencimiento);
+                                if (fecha > vence) {
+                                    open = true;
+                                    html += `
                                 <td>${ docu.tipo}</td>
                                 <td>${ docu.estado == "I"  ? "Inactivo" : "Activo" }</td>
                                 <td>${ docu.fecha_vencimiento}</td>
                                 `;
-                                        html += `<td>Se encuentra vencido</td>`
-                                        html += `</tr>`
+                                    html += `<td>Se encuentra vencido</td>`
+                                    html += `</tr>`
 
-                                    };
                                 };
-                            }
-
-                        })
-                        $("#info").html(html)
-                        if (open) {
-                            $("#modalDocumentos").modal('show');
-                            $('#id_vehiculo').val("");
-                            $('#clase_vehiculo').val("");
-                            $('#select2-id_vehiculo-container').html('');
-                            $('select#id_vehiculo').val('0');
-                            $('#identificacion').val('');
-                            $('#nombre').val('');
-                        } else {
-                            var clase = $('#id_vehiculo option:selected').attr("dataClase");
-                            $('#clase_vehiculo').val(clase);
-                            var id_veh = $('#id_vehiculo').val();
-                            var id_con = $('#id_vehiculo option:selected').attr("data_id_con");
-                            $("#id_conductor").val(id_con);
-                            $.post('<?= $patch ?>ordenes_servicios/cargarcondu', {
-                                id_veh: id_veh,
-                                id_con: id_con
-                            }, function(data) {
-                                $('#identificacion').val(data.identificacion);
-                                $('#nombre').val(data.nombre);
-                            }, "json");
+                            };
                         }
-                    }, 'Json');
+
+                    })
+                    $("#info").html(html)
+                    if (open) {
+                        $("#modalDocumentos").modal('show');
+                        $('#id_vehiculo').val("");
+                        $('#clase_vehiculo').val("");
+                        $('#select2-id_vehiculo-container').html('');
+                        $('select#id_vehiculo').val('0');
+                        $('#identificacion').val('');
+                        $('#nombre').val('');
+                    } else {
+                        var clase = $('#id_vehiculo option:selected').attr("dataClase");
+                        $('#clase_vehiculo').val(clase);
+                        var id_veh = $('#id_vehiculo').val();
+                        var id_con = $('#id_vehiculo option:selected').attr("data_id_con");
+                        $("#id_conductor").val(id_con);
+                        $.post('<?= $patch ?>ordenes_servicios/cargarcondu', {
+                            id_veh: id_veh,
+                            id_con: id_con
+                        }, function(data) {
+                            $('#identificacion').val(data.identificacion);
+                            $('#nombre').val(data.nombre);
+                        }, "json");
+                    }
+                }, 'Json');
                 // } else {
                 //     $('#id_vehiculo').val("");
                 //     $('#clase_vehiculo').val("");

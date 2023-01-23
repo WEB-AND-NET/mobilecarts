@@ -10,7 +10,7 @@
         <li class="active"><?php echo ($role->id == "" ? 'Registro' : 'Actualizaci&oacute;n'); ?> de Roles</li>
     </ol>
 </section>
-<br/>
+<br />
 <div class="box ">
     <form id="form1" class="form" action="<?= $patch; ?>roles/save" method="post" name="form1">
         <div class="box-body">
@@ -35,53 +35,55 @@
                 </div>
 
                 <div class="clearfix"></div>
-                <table id="tabledatas" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Acceso</th>
-                            <th>Opci&oacute;n de menu</th>
-                            <th>Total</th>
-                            <th>Parcial</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $i = 0;
-                        foreach ($data["opciones"] as $op):
+                <div class="table-responsive" style="width: auto;">
+                    <table id="tabledatas" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Acceso</th>
+                                <th>Opci&oacute;n de menu</th>
+                                <th>Total</th>
+                                <th>Parcial</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 0;
+                            foreach ($data["opciones"] as $op) :
                             ?>
 
-                        <td><input class="minimal" name="opcion[]" type="checkbox" value="<?= $op['codigo']; ?>" <?= $op["codigo"] == $op["opcion"] ? 'checked' : '' ?>/></td>
-                        <td><?= $op['menuitem']; ?></td>
-                        <td><input class="minimal" name="<?=  $op['codigo']; ?>access" type="radio" value="T" <?php
-                            if (isset($op["acceso"])) {
-                                echo ($op["acceso"] == "T" ? 'checked' : '');
-                            } else {
-                                echo ($role->id == "" ? 'checked' : '');
-                            }
-                            ?> /></td>
-                        <td><input class="minimal" name="<?= $op['codigo']; ?>access" type="radio" value="P" <?php
-                            if (isset($op["acceso"])) {
-                                echo ($op["acceso"] == "P" ? 'checked' : '');
-                            } else {
-                                echo ($role->id != "" ? '' : '');
-                            }
-                            ?> /></td>
-                        </tr>
-                        <?php
-                        $i = 1 - $i;
-                    endforeach;
-                    ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Acceso</th>
-                            <th>Opci&oacute;n de menu</th>
-                            <th>Total</th>
-                            <th>Parcial</th>
-                        </tr>
-                    </tfoot>
+                                <td><input class="minimal" name="opcion[]" type="checkbox" value="<?= $op['codigo']; ?>" <?= $op["codigo"] == $op["opcion"] ? 'checked' : '' ?> /></td>
+                                <td><?= $op['menuitem']; ?></td>
+                                <td><input class="minimal" name="<?= $op['codigo']; ?>access" type="radio" value="T" <?php
+                                                                                                                        if (isset($op["acceso"])) {
+                                                                                                                            echo ($op["acceso"] == "T" ? 'checked' : '');
+                                                                                                                        } else {
+                                                                                                                            echo ($role->id == "" ? 'checked' : '');
+                                                                                                                        }
+                                                                                                                        ?> /></td>
+                                <td><input class="minimal" name="<?= $op['codigo']; ?>access" type="radio" value="P" <?php
+                                                                                                                        if (isset($op["acceso"])) {
+                                                                                                                            echo ($op["acceso"] == "P" ? 'checked' : '');
+                                                                                                                        } else {
+                                                                                                                            echo ($role->id != "" ? '' : '');
+                                                                                                                        }
+                                                                                                                        ?> /></td>
+                                </tr>
+                            <?php
+                                $i = 1 - $i;
+                            endforeach;
+                            ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Acceso</th>
+                                <th>Opci&oacute;n de menu</th>
+                                <th>Total</th>
+                                <th>Parcial</th>
+                            </tr>
+                        </tfoot>
 
-                </table>
+                    </table>
+                </div>
 
 
                 <div class="box-footer col-lg-2 pull-right">
@@ -98,15 +100,14 @@
 <script src="<?= $patch ?>global/admin/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 <script src="<?= $patch ?>global/admin/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-green',
             radioClass: 'iradio_minimal-green'
         });
     });
 
-    $(function () {
+    $(function() {
         $("#tabledatas").DataTable({
             paging: false
         });
@@ -120,8 +121,7 @@
         sErrMsg += validateText($('#role').val(), $('#l_role').html(), true);
         sErrMsg += validateText($('#descripcion').val(), $('#l_descripcion').html(), true);
 
-        if (sErrMsg !== "")
-        {
+        if (sErrMsg !== "") {
             alert(sErrMsg);
             flag = false;
         }
@@ -130,32 +130,29 @@
 
     }
 
-    var validar = function () {
+    var validar = function() {
         $.post('index.php?mod=roles&cmd=validar', {
-            role: $('#role').val(),
-            id: $("#id").val()
-        },
-        function (data) {
-            if (data) {
-                alert('El role ' + $('#role').val() + ' ya se encuentra registrado ..');
-            } else {
-                submitbutton('save');
+                role: $('#role').val(),
+                id: $("#id").val()
+            },
+            function(data) {
+                if (data) {
+                    alert('El role ' + $('#role').val() + ' ya se encuentra registrado ..');
+                } else {
+                    submitbutton('save');
+                }
             }
-        }
         );
     };
 
-    $('#btn-save').click(function () {
+    $('#btn-save').click(function() {
         if (validateForm()) {
             //validar();
             $('#form1').submit();
         }
     });
 
-    $('#btn-cancel').click(function () {
+    $('#btn-cancel').click(function() {
         window.location = '<?php echo $data['rootUrl']; ?>roles';
     });
-
 </script>
-
-

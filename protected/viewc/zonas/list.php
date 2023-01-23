@@ -16,40 +16,42 @@
                     <div class="mailbox-controls" style="float:right;">
                         <!-- Check all button -->
                         <div class="btn-group">
-                            <a href="<?= $patch; ?>zonas/add" id="btn-add" class="btn btn-default btn-md"><i class="fa fa-plus-circle"></i><br/><span>Nuevo</span></a>
-                            <a href="<?= $patch; ?>zonas/edit" id="btn-edit"class="btn btn-default btn-md"><i class="fa fa-edit"></i><br/><span>Editar</span></a>
-                            <a href="<?= $patch; ?>zonas/delete" id="btn-delete" class="btn btn-default btn-md"><i class="fa fa-minus-circle"></i><br/><span>Eliminar</spa></a>
+                            <a href="<?= $patch; ?>zonas/add" id="btn-add" class="btn btn-default btn-md"><i class="fa fa-plus-circle"></i><br /><span>Nuevo</span></a>
+                            <a href="<?= $patch; ?>zonas/edit" id="btn-edit" class="btn btn-default btn-md"><i class="fa fa-edit"></i><br /><span>Editar</span></a>
+                            <a href="<?= $patch; ?>zonas/delete" id="btn-delete" class="btn btn-default btn-md"><i class="fa fa-minus-circle"></i><br /><span>Eliminar</spa></a>
                         </div><!-- /.btn-group -->
                     </div>
                     <div class="clearfix"></div>
 
-                    <table id="tabledatas" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Nombre</th>
-                                <th>Regi&oacute;n</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($data["zonas"] as $r) {
-                                ?>
+                    <div class="table-responsive" style="width: auto;">
+                        <table id="tabledatas" class="table table-bordered table-striped">
+                            <thead>
                                 <tr>
-                                    <td><input class="minimal" name="item" type="radio" value="<?php echo $r['id']; ?>" /></td>
-                                    <td><?php echo $r['nombre']; ?></td>
-                                    <td><?php echo $r['region']; ?></td>
+                                    <th>&nbsp;</th>
+                                    <th>Nombre</th>
+                                    <th>Regi&oacute;n</th>
                                 </tr>
-                            <?php } ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Nombre</th>
-                                <th>Regi&oacute;n</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($data["zonas"] as $r) {
+                                ?>
+                                    <tr>
+                                        <td><input class="minimal" name="item" type="radio" value="<?php echo $r['id']; ?>" /></td>
+                                        <td><?php echo $r['nombre']; ?></td>
+                                        <td><?php echo $r['region']; ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>Nombre</th>
+                                    <th>Regi&oacute;n</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>
@@ -59,43 +61,40 @@
 <script src="<?= $patch ?>global/admin/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 <script src="<?= $patch ?>global/admin/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-purple',
             radioClass: 'iradio_minimal-green'
         });
     });
 
-    $(function () {
+    $(function() {
         $("#tabledatas").DataTable();
     });
 
-    $('#btn-edit').click(function (e) {
+    $('#btn-edit').click(function(e) {
         item = $('input[name=item]:checked').attr('value');
         if (!item) {
             alert('Debe seleccionar un item');
             e.preventDefault();
-        }
-        else {
+        } else {
             var action = $(this).attr("href") + "/" + item;
             $(this).attr("href", action);
         }
     });
 
-    $('#btn-delete').click(function (e) {
+    $('#btn-delete').click(function(e) {
         item = $('input[name=item]:checked').attr('value');
         if (!item) {
             alert('Debe seleccionar un item');
             e.preventDefault();
-        }
-        else {
+        } else {
             var action = $(this).attr("href") + "/" + item;
             $(this).attr("href", action);
         }
     });
 
-    $('#btn-find').click(function () {
+    $('#btn-find').click(function() {
         $('#form1').submit();
     });
 </script>

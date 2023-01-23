@@ -17,61 +17,64 @@
                         <!-- Check all button -->
                         <div class="btn-group">
                             <a href="<?= $patch; ?>checklist/add" id="btn-add" class="btn btn-default btn-md"><i class="fa fa-plus-circle"></i><br /><span>Nuevo</span></a>
+                            <a href="<?= $patch; ?>checklist/semanal" id="btn-semanal" class="btn btn-default btn-md"><i class="fa fa-print"></i><br /><span>Reporte</span></a>
                             <a href="<?= $patch; ?>checklist/report" id="btn-report" target="_blank" class="btn btn-default btn-md"><i class="fa fa-archive"></i><br /><span>Ver</span></a>
                         </div><!-- /.btn-group -->
                     </div>
                     <div class="clearfix"></div>
 
-                    <table id="tabledatas" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Numero</th>
-                                <th>Fecha</th>
-                                <th>Placa</th>
-                                <th>Conductor</th>
-                                <th>Resultado</th>
-                                <th>Realizado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($data["checklists"] as $r) {
-                            ?>
+                    <div class="table-responsive" style="width: auto;">
+                        <table id="tabledatas" class="table table-bordered table-striped">
+                            <thead>
                                 <tr>
-                                    <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
-                                    <td><?= $r['id']; ?></td>
-                                    <td><?= $r['fecha']; ?></td>
-                                    <td><?= $r['placa']; ?></td>
-                                    <td><?= $r['conductor']; ?></td>
-                                    <?php
-                                    $style = "label label-success";
-                                    if ($r['resultado'] !== "Todo OK") {
-                                        $style = "label label-danger";
-                                    }
-                                    ?>
-                                    <td>
-                                        <span class="label <?= $style ?>">
-                                            <?= $r['resultado']; ?>
-                                        </span>
-                                    </td>
-                                    <td><?= $r['creacion']; ?></td>
-
+                                    <th>&nbsp;</th>
+                                    <th>Numero</th>
+                                    <th>Fecha</th>
+                                    <th>Placa</th>
+                                    <th>Conductor</th>
+                                    <th>Resultado</th>
+                                    <th>Realizado</th>
                                 </tr>
-                            <?php } ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Numero</th>
-                                <th>Fecha</th>
-                                <th>Placa</th>
-                                <th>Conductor</th>
-                                <th>Resultado</th>
-                                <th>Realizado</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($data["checklists"] as $r) {
+                                ?>
+                                    <tr>
+                                        <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
+                                        <td><?= $r['id']; ?></td>
+                                        <td><?= $r['fecha']; ?></td>
+                                        <td><?= $r['placa']; ?></td>
+                                        <td><?= $r['conductor']; ?></td>
+                                        <?php
+                                        $style = "label label-success";
+                                        if ($r['resultado'] !== "Todo OK") {
+                                            $style = "label label-danger";
+                                        }
+                                        ?>
+                                        <td>
+                                            <span class="label <?= $style ?>">
+                                                <?= $r['resultado']; ?>
+                                            </span>
+                                        </td>
+                                        <td><?= $r['creacion']; ?></td>
+
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>Numero</th>
+                                    <th>Fecha</th>
+                                    <th>Placa</th>
+                                    <th>Conductor</th>
+                                    <th>Resultado</th>
+                                    <th>Realizado</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>
@@ -101,7 +104,9 @@
             var old = $(this).attr("href");
             var action = $(this).attr("href") + "/" + item;
             $(this).attr("href", action);
-            setTimeout(() => {  $(this).attr("href", old); }, 2000);
+            setTimeout(() => {
+                $(this).attr("href", old);
+            }, 2000);
         }
     });
 </script>
