@@ -116,22 +116,40 @@ class ChecklistController extends DooController
         Doo::loadModel("RevisionDetails");
         $revisionDiara = new RevisionDiara($_POST);
         $login = $_SESSION['login'];
+        $fecha = date_create("$revisionDiara->venc_extintor");
+        $now = date_create("now");
+        if ($fecha < $now) {
+            $revisionDiara->observaciones = "Extintor vencido. ";
+        }
+
         if ($login->role == "1") {
-            $revisionDiara->observaciones = "Realizado por el administrados " . $login->id;
+            $revisionDiara->observaciones .= "Realizado por el administrador " . $login->id;
         } else {
             $revisionDiara->id_conductor = $login->id_usuario;
         }
         $idRevision = Doo::db()->Insert($revisionDiara);
 
-        for ($i = 1; $i < 44; $i++) {
+
+
+        for ($i = 1; $i < 45; $i++) {
             $details = new RevisionDetails();
             $details->id_revision = $idRevision;
             $details->id_subcategoria = $i;
+
             $details->estado = $datos[$i . ""];
             if ($details->estado != "OK") {
                 $details->observacion = $datos["observacion" . $i];
                 $details->notificar = '1';
             }
+            
+            if ($details->id_subcategoria == 44) {
+                if ($fecha < $now) {
+                    $details->estado = "Fallo";
+                    $details->notificar = '1';
+                    $details->observacion .= "Extintor vencido";
+                }
+            }
+
             Doo::db()->Insert($details);
         }
 
