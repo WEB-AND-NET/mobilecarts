@@ -66,7 +66,10 @@ class ChecklistController extends DooController
                 $this->data['vehiculos'] = Doo::db()->query("SELECT v.id,v.placa FROM vehiculos v WHERE v.deleted=0 AND v.id_propietario = $login->id_usuario")->fetchAll();
                 break;
             case "6":
-                $this->data['vehiculos'] = Doo::db()->query("SELECT v.id,v.placa FROM vehiculos v INNER JOIN vehiculos_conductores vc ON v.id = vc.id_vehiculo WHERE v.deleted=0 AND vc.id_conductor = $login->id_usuario")->fetchAll();
+                $propietario = Doo::db()->query("SELECT id_propietario FROM conductores WHERE id = $login->id_usuario")->fetch();
+                $idpro = $propietario["id_propietario"];
+                $this->data['vehiculos'] = Doo::db()->query("SELECT v.id,v.placa FROM vehiculos v WHERE v.deleted=0 AND v.id_propietario = $idpro")->fetchAll();
+                //$this->data['vehiculos'] = Doo::db()->query("SELECT v.id,v.placa FROM vehiculos v INNER JOIN vehiculos_conductores vc ON v.id = vc.id_vehiculo WHERE v.deleted=0 AND vc.id_conductor = $login->id_usuario")->fetchAll();
                 break;
         }
 
