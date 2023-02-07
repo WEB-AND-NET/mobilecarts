@@ -257,5 +257,143 @@ class ChecklistController extends DooController
 
         Doo::db()->query("UPDATE revision_details SET notificar = 2 WHERE id_revision = '$id' ");
 
-        return Doo::conf()->APP_URL."checklist/report/".$id;    }
+        return Doo::conf()->APP_URL."checklist/report/".$id;    
+    }
+
+    public function downloadExcel(){
+        
+        Doo::loadClass("excel/Classes/PHPExcel");
+        $objPHPExcel = new PHPExcel();     
+        $objPHPExcel->getActiveSheet()->setShowGridlines(false);  
+        $propiedades=$objPHPExcel->getProperties();
+        $propiedades->setCreator("Cattivo");
+        $propiedades->setLastModifiedBy("Cattivo");
+        $propiedades->setTitle("Documento Excel");
+        $propiedades->setSubject("Documento Excel");
+        $propiedades->setDescription("descripcion del documento");
+        $propiedades->setKeywords("Excel Office 2007 openxml php");
+        $propiedades->setCategory("Documento Excel");
+         // Agregar Informacion
+        $page_body=$objPHPExcel->setActiveSheetIndex(0);
+
+        //combinar celdas
+        $page_body->mergeCells('A1:B6');
+        $page_body->mergeCells('C2:F5');
+
+        //Insertar logo a excel
+        $objDrawing = new PHPExcel_Worksheet_Drawing();
+        $objDrawing->setName('logo');
+        $objDrawing->setDescription('logo');
+        $objDrawing->setPath('global/img/logo.png');
+        $objDrawing->setCoordinates('A1');
+        //setOffsetX works properly
+        $objDrawing->setOffsetX(5); 
+        $objDrawing->setOffsetY(5);                
+        //set width, height
+        $objDrawing->setWidth(300); 
+        $objDrawing->setHeight(100); 
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());  
+
+        //Alineacion centrada y negrilla para celda de titulo y fecha
+        $style = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+
+            ),
+            'font'  => array(
+                'bold'  => true
+            )
+        );
+        $page_body->getStyle('C2')->applyFromArray($style);
+        $page_body->getStyle('C2')->getAlignment()->setWrapText(true);
+
+        $today = date('d-m-Y');
+
+        $page_body->setCellValue('C2',"Preoperacional completo\n". $today . "\nCartagena, Colombia");
+        
+        
+        //Color de relleno y negrilla para cabezeras
+        $styleArray = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => '70ad47')
+            ),
+            'font'  => array(
+                'bold'  => true,
+                'color' => array('rgb' => 'FFFFFF')
+            )
+        );
+        $page_body->getStyle('A7:G7')->applyFromArray($styleArray);
+
+        
+        $fila=7;
+        $page_body->setCellValue('A'.$fila,"Consecutivo");
+       
+        $page_body->setCellValue('B'.$fila,"Fecha");
+        $page_body->setCellValue('C'.$fila,"Placa");
+        $page_body->setCellValue('D'.$fila,"Conductor");
+        $page_body->setCellValue('E'.$fila,"Resultado");
+        $page_body->setCellValue('F'.$fila,"Creacion");
+        $page_body->setCellValue('G'.$fila,"Observaciones");
+
+        $objPHPExcel->getActiveSheet()->setAutoFilter('B7:G7');
+
+        $query = "SELECT r.id, r.fecha, v.placa, CONCAT(c.nombre, ' ',c.apellidos) AS conductor, IF(rd.id > 0,'Se reportanron fallos', 'Todo OK' ) AS resultado, r.creacion, GROUP_CONCAT(rd.observacion SEPARATOR', ') AS obs FROM revision_diara r ";
+        $query .= "LEFT JOIN conductores c ON r.id_conductor = c.id ";
+        $query .= "LEFT JOIN vehiculos v ON r.id_vehiculo = v.id ";
+        $query .= "LEFT JOIN revision_details rd ON rd.id_revision = r.id AND rd.estado LIKE 'Fallo' group by r.id ";
+        $entrys= Doo::db()->query($query)->fetchAll();
+
+        //Bordes desde titulos hasta la fila del ultimo registro
+        $cant = count($entrys);
+        $cant+=7;
+        $page_body->getStyle('A7:G'.$cant)->getBorders()->applyFromArray(
+            array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array(
+                        'rgb' => '000000'
+                    )
+                    ),
+            )
+        );       
+        
+        
+        //$i=0;
+        foreach($entrys as $e){
+            //$i++;
+            $fila++;
+            $page_body->setCellValue('A' . $fila, $e['id']);
+            $page_body->setCellValue('B' . $fila, $e['fecha']);
+            $page_body->setCellValue('C' . $fila, $e['placa']);
+            $page_body->setCellValue('D' . $fila, $e['conductor']);
+            $page_body->setCellValue('E' . $fila, $e['resultado']);
+            $page_body->setCellValue('F' . $fila, $e['creacion']);
+            $page_body->setCellValue('G' . $fila, $e['obs']);
+        
+        }
+        //Renombrar Hoja
+        $objPHPExcel->getActiveSheet()->setTitle('Lista');
+
+        //Ajustar ancho de las columna
+        foreach(range('A','G') as $columnID) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
+        //Establecer la hoja activa, para que cuando se abra el documento se muestre primero.
+        $objPHPExcel->setActiveSheetIndex(0);
+        $hoy = date("Y-m-d");  
+        // Se modifican los encabezados del HTTP para indicar que se envia un archivo de Excel.        
+        header('Content-Type: application/vnd.ms-excel');        
+        header('Content-Disposition: attachment;filename="PREOPERACIONAL_'.$hoy.'.xlsx"');//Para descargar en local
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $documentName="PREOPERACIONAL_$hoy.xlsx";
+        $objWriter->save('php://output');//Para guardar fuera del servidor 
+        return $documentName;
+
+   
+    }
 }

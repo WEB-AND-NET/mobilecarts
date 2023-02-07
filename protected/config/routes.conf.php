@@ -539,4 +539,5 @@ $route['*']['/checklist/reports'] = array('ChecklistController', 'report');
 $route['*']['/checklist/reportsemanal'] = array('ChecklistController', 'reportSemanal');
 $route['*']['/checklist/pendientes'] = array('ChecklistController', 'pendientes');
 $route['*']['/checklist/openNotify/:pindex'] = array('ChecklistController', 'openNotify');
+$route['*']['/checklist/reportExcel'] = array('ChecklistController', 'downloadExcel');
 

@@ -19,6 +19,7 @@
                             <a href="<?= $patch; ?>checklist/add" id="btn-add" class="btn btn-default btn-md"><i class="fa fa-plus-circle"></i><br /><span>Nuevo</span></a>
                             <a href="<?= $patch; ?>checklist/semanal" id="btn-semanal" class="btn btn-default btn-md"><i class="fa fa-print"></i><br /><span>Reporte</span></a>
                             <a href="<?= $patch; ?>checklist/report" id="btn-report" target="_blank" class="btn btn-default btn-md"><i class="fa fa-archive"></i><br /><span>Ver</span></a>
+                            <a href="<?= $patch; ?>checklist/reportExcel" id="btn-excel" target="_blank" class="btn btn-default btn-md"><i class="fa fa-file-excel-o"></i><br /><span>Descargar</span></a>
                         </div><!-- /.btn-group -->
                     </div>
                     <div class="clearfix"></div>
