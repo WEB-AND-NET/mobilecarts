@@ -1,7 +1,7 @@
 <link href="<?= $data['rootUrl'] ?>global/admin/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 <section class="content-header">
     <h1>
-        Listado de CheckLists
+        Listado de Pre-Operacionales
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?= $data['rootUrl'] ?>">Inicio</a></li>
@@ -29,7 +29,7 @@
                             <thead>
                                 <tr>
                                     <th>&nbsp;</th>
-                                    <th>Numero</th>
+                                    <th>Número</th>
                                     <th>Fecha</th>
                                     <th>Placa</th>
                                     <th>Conductor</th>
@@ -66,7 +66,7 @@
                             <tfoot>
                                 <tr>
                                     <th>&nbsp;</th>
-                                    <th>Numero</th>
+                                    <th>Número</th>
                                     <th>Fecha</th>
                                     <th>Placa</th>
                                     <th>Conductor</th>

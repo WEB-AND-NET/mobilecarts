@@ -48,9 +48,29 @@ class ParametrosBase extends DooModel{
      */
     public $cons_factura;
 
+    /**
+     * @var double
+     */
+    public $kmMatenimiento;
+
+    /**
+     * @var int Max length is 11.
+     */
+    public $diasNotifyMante;
+
+    /**
+     * @var double
+     */
+    public $kmNotify;
+
+    /**
+     * @var int Max length is 11.
+     */
+    public $proxMantMeses;
+
     public $_table = 'parametros';
     public $_primarykey = 'id';
-    public $_fields = array('id','territorial','resolucion_hab','ano_hab','ano_actual','cons_contrato','cons_planilla','cons_ruta','cons_factura');
+    public $_fields = array('id','territorial','resolucion_hab','ano_hab','ano_actual','cons_contrato','cons_planilla','cons_ruta','cons_factura','kmMatenimiento','diasNotifyMante','kmNotify','proxMantMeses');
 
     public function getVRules() {
         return array(
@@ -102,6 +122,28 @@ class ParametrosBase extends DooModel{
                 'cons_factura' => array(
                         array( 'integer' ),
                         array( 'maxlength', 4 ),
+                        array( 'optional' ),
+                ),
+
+                'kmMatenimiento' => array(
+                        array( 'float' ),
+                        array( 'optional' ),
+                ),
+
+                'diasNotifyMante' => array(
+                        array( 'integer' ),
+                        array( 'maxlength', 11 ),
+                        array( 'optional' ),
+                ),
+
+                'kmNotify' => array(
+                        array( 'float' ),
+                        array( 'optional' ),
+                ),
+
+                'proxMantMeses' => array(
+                        array( 'integer' ),
+                        array( 'maxlength', 11 ),
                         array( 'optional' ),
                 )
             );

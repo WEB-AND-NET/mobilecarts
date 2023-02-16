@@ -1,17 +1,17 @@
 
 <section class="content-header">
     <h1>
-        Resumen Checklist Semanal 
+        Reporte de mantenimientos
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?= $patch ?>">Inicio</a></li>
-        <li><a href="<?= $patch ?>checklist">Checklist</a></li>
-        <li class="active">Semanal</li>
+        <li><a href="<?= $patch ?>mantenimientos">Mantenimientos</a></li>
+        <li class="active">Reportes</li>
     </ol>
 </section>
 <br/>
 <div class="box ">
-    <form id="form1" class="form" action="<?= $patch; ?>checklist/reportsemanal" method="post" name="form1">
+    <form id="form1" class="form" action="<?= $patch; ?>mantenimientos/reportes/diario" method="post" name="form1">
         <div class="box-body">
             <fieldset style="width:97%;">
                 
@@ -23,7 +23,7 @@
                                     <i class="fa fa-location-arrow"></i>
                                 </div>
                                 <select class="form-control select2" id="id_vehiculo" name="id_vehiculo" class="select" required>
-                                    <option value="">[Seleccione..]</option>
+                                <option id="0" name="0" value="0" selected>Todos</option>
                                     <?php foreach ($data["vehiculos"] as $v) { ?>
                                         <option id="<?= $v['id']; ?>" name="<?= $v['id']; ?>" value="<?= $v['id']; ?>"><?= $v['placa']; ?></option>
                                     <?php } ?>
@@ -34,7 +34,7 @@
                 <div class="clearfix"></div><br/>
 
                 <div class="col-lg-4">
-                    <label id="l_fecha_ultima_pago">Fecha inicio</label>
+                    <label id="l_fechaIni">Fecha inicio</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <label id="l_fecha_ultima_revision">Fecha fin</label>
+                    <label id="l_fechaFin">Fecha fin</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
@@ -72,7 +72,7 @@
    
 
     $('#btn-cancel').click(function () {
-        window.location = '<?= $patch; ?>checklist';
+        window.location = '<?= $patch; ?>mantenimientos';
     });
 
 </script>

@@ -13,7 +13,8 @@
 </section>
 <br />
 
-<form id="form1" class="form" action="<?= $patch; ?>mantenimientos/savefinish" method="post" name="form1" enctype="multipart/form-data">
+<form id="form1" class="form" action="<?= $patch; ?>mantenimientos/savefinish" method="post" name="form1"
+    enctype="multipart/form-data">
     <div class="box ">
         <div class="box-body">
             <fieldset>
@@ -27,7 +28,7 @@
                             <i class="fa fa-list-ol"></i>
 
                         </div>
-                        <select disabled name="tipo" id="tipo" class="form-control select2">
+                        <select disabled name="tip" id="tip" class="form-control select2">
 
                             <option value="PRE" <?= $a->tipo == 'PRE' ? 'selected' : ''; ?>>Preventivo</option>
                             <option value="COR" <?= $a->tipo == 'COR' ? 'selected' : ''; ?>>Correctivo</option>
@@ -36,6 +37,7 @@
                             <option value="OTR" <?= $a->tipo == 'OTR' ? 'selected' : ''; ?>>Otro</option>
 
                         </select>
+
 
 
                     </div><!-- /.input group -->
@@ -47,7 +49,8 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input disabled type="date" class="form-control pull-right" value="<?= $a->fecha; ?>" id="fecha" name="fecha">
+                        <input readonly type="date" class="form-control pull-right" value="<?= $a->fecha; ?>" id="fecha"
+                            name="fecha">
                     </div>
                 </div>
 
@@ -58,7 +61,8 @@
                         <div class="input-group-addon">
                             <i class="fa fa-cog"></i>
                         </div>
-                        <input disabled type="number" class="form-control pull-right" value="<?= $a->km; ?>" id="km" name="km">
+                        <input readonly type="number" class="form-control pull-right" value="<?= $a->km; ?>" id="km"
+                            name="km">
                     </div>
                 </div>
 
@@ -72,7 +76,8 @@
                         <div class="input-group-addon">
                             <i class="fa fa-dollar"></i>
                         </div>
-                        <input type="number" class="form-control pull-right" value="<?= $a->costoTotal; ?>" id="costoTotal" name="costoTotal">
+                        <input type="number" class="form-control pull-right" value="<?= $a->costoTotal; ?>"
+                            id="costoTotal" name="costoTotal">
                     </div>
                 </div>
 
@@ -83,7 +88,20 @@
                         <div class="input-group-addon">
                             <i class="fa fa-file"></i>
                         </div>
-                        <input name='archivoFactura' class='form-control doc' id="archivoFactura" attr-folder="FacturasMantenimientos" type='file'>
+                        <input name='archivoFactura' class='form-control doc' id="archivoFactura"
+                            attr-folder="FacturasMantenimientos" type='file' accept="image/*"
+                            onchange="return fileValidation1()">
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <label id="l_archivoFactura">Evidencias fotográficas</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-file"></i>
+                        </div>
+                        <input name='fotos[]' class='form-control doc' id="fotos[]" attr-folder="FacturasMantenimientos"
+                            type='file' multiple="" accept="image/*" onchange="return fileValidation()">
                     </div>
                 </div>
 
@@ -93,7 +111,8 @@
 
                 <div class="col-lg-8">
                     <label id="l_descripcion">Descripcion</label>
-                    <textarea class="form-control" rows="3" id="descripcion" name="descripcion"><?= $a->descripcion; ?></textarea>
+                    <textarea class="form-control" rows="3" id="descripcion"
+                        name="descripcion"><?= $a->descripcion; ?></textarea>
                 </div>
 
                 <div class="clearfix"></div>
@@ -117,7 +136,7 @@
                         </span>
                         <select class=" select2" style="width: 100%;" id="id_actividad" name="id_actividad">
                             <?php foreach ($data["actividades"] as $c) { ?>
-                                <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
+                            <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
                             <?php } ?>
                         </select>
 
@@ -181,7 +200,8 @@
                 <input name="id" type="hidden" id="id" value="<?= $a->id; ?>" />
                 <input name="vehiculoId" type="hidden" id="vehiculoId" value="<?= $data['idVehiculo']  ?>" />
                 <input name="archivo" type="hidden" id="archivo" value="<?= $a->archivoFactura ?>" />
-
+                <input name="tipo" readonly type="hidden" class="form-control pull-right" value="<?= $a->tipo; ?>"
+                    id="tipo">
             </div>
         </div>
     </div>
@@ -193,80 +213,118 @@
 <script type="text/javascript" src="<?= $patch; ?>global/js/form.js"></script>
 
 <script type="text/javascript">
-    function validateForm() {
+function validateForm() {
 
-        var sErrMsg = "";
-        var flag = true;
+    var sErrMsg = "";
+    var flag = true;
 
-        sErrMsg += ($('#tipo').val() === "" ? '- Debe seleccionar un Tipo.\n' : '');
-        sErrMsg += validateText($('#fecha').val(), $('#l_fecha').html(), true);
-        sErrMsg += validateNumber($('#km').val(), $('#l_km').html(), true);
-        sErrMsg += validateText($('#descripcion').val(), $('#l_descripcion').html(), true);
-        sErrMsg += validateNumber($('#costoTotal').val(), $('#l_costoTotal').html(), true);
+    sErrMsg += ($('#tipo').val() === "" ? '- Debe seleccionar un Tipo.\n' : '');
+    sErrMsg += validateText($('#fecha').val(), $('#l_fecha').html(), true);
+    sErrMsg += validateNumber($('#km').val(), $('#l_km').html(), true);
+    sErrMsg += validateText($('#descripcion').val(), $('#l_descripcion').html(), true);
+    sErrMsg += validateNumber($('#costoTotal').val(), $('#l_costoTotal').html(), true);
 
 
-        if (sErrMsg !== "") {
-            alert(sErrMsg);
-            flag = false;
-        }
-
-        return flag;
-
+    if (sErrMsg !== "") {
+        alert(sErrMsg);
+        flag = false;
     }
 
-    // Cargar todos los conductores agregados en la grilla
-    function loadItems() {
-        $.post('<?= $patch; ?>mantenimientos/loadItem', {}, function(data) {
-            $('#items').html(data);
-        });
-    }
+    return flag;
 
-    $('#items').ready(loadItems);
+}
 
-
-    // Boton para agregar actividad
-    $('#btn-addActivity').click(function() {
-        AddItemE();
+// Cargar todos los conductores agregados en la grilla
+function loadItems() {
+    $.post('<?= $patch; ?>mantenimientos/loadItem', {}, function(data) {
+        $('#items').html(data);
     });
+}
 
-    // Agregar una nueva actividad a la grilla
-    function AddItemE() {
-        $("#form1").mask("Espere...");
-        $.post(
-            '<?= $patch; ?>mantenimientos/addItem', {
-                id: $('#id_actividad').val(),
-                anotacion: $('#anotaciones').val(),
-                costo: $('#costo').val()
-            },
-            function(data) {
-                $("#form1").unmask();
-                $('#items').html(data);
-                $('#anotaciones').val("");
-                $('#costo').val("");
-            }
-        );
-    }
+$('#items').ready(loadItems);
 
-    // Eliminar un conductor de la grilla
-    function delItem(i) {
-        $("#form1").mask("Espere...");
-        $.post('<?= $patch; ?>mantenimientos/deleteItem', {
-            index: i
-        }, function(data) {
+
+// Boton para agregar actividad
+$('#btn-addActivity').click(function() {
+    AddItemE();
+});
+
+// Agregar una nueva actividad a la grilla
+function AddItemE() {
+    $("#form1").mask("Espere...");
+    $.post(
+        '<?= $patch; ?>mantenimientos/addItem', {
+            id: $('#id_actividad').val(),
+            anotacion: $('#anotaciones').val(),
+            costo: $('#costo').val()
+        },
+        function(data) {
             $("#form1").unmask();
             $('#items').html(data);
-        });
+            $('#anotaciones').val("");
+            $('#costo').val("");
+        }
+    );
+}
+
+// Eliminar un conductor de la grilla
+function delItem(i) {
+    $("#form1").mask("Espere...");
+    $.post('<?= $patch; ?>mantenimientos/deleteItem', {
+        index: i
+    }, function(data) {
+        $("#form1").unmask();
+        $('#items').html(data);
+    });
+}
+
+$('#btn-save').click(function() {
+    if (validateForm()) {
+        $('#form1').submit();
+    }
+});
+
+$('#btn-cancel').click(function() {
+    $.post('<?= $patch; ?>vehiculos/clean', {}, function(data) {
+        window.location = '<?= $patch; ?>mantenimientos/<?= $data['idVehiculo']; ?>';
+    });
+});
+
+function fileValidation() {
+    var fileInput =
+        document.getElementById('fotos[]');
+    var list = fileInput.files;
+    // Allowing file type
+    var allowedExtensions =
+        /^image./i;
+
+    for (var i = 0; i < list.length; i++) {
+        var fileType = list[i].type;
+        if (!allowedExtensions.exec(fileType)) {
+            alert('Solo se permiten imagenes.');
+            fileInput.value = '';
+            return false;
+        }
     }
 
-    $('#btn-save').click(function() {
-        if (validateForm()) {
-            $('#form1').submit();
-        }
-    });
+}
 
-    $('#btn-cancel').click(function() {
-        $.post('<?= $patch; ?>vehiculos/clean', {}, function(data) {
-            window.location = '<?= $patch; ?>mantenimientos/<?= $data['idVehiculo']; ?>';
-        });
-    });
+function fileValidation1() {
+    var fileInput =
+        document.getElementById('archivoFactura');
+    var list = fileInput.files;
+
+
+    // Allowing file type
+    var allowedExtensions =
+        /^image./i;
+
+    var fileType = list[0].type;
+    if (!allowedExtensions.exec(fileType)) {
+        alert('Solo se permiten imagenes.');
+        fileInput.value = '';
+        return false;
+    }
+
+}
 </script>

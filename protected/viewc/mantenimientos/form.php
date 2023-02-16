@@ -7,13 +7,14 @@
     <ol class="breadcrumb">
         <li><a href="<?= $patch ?>">Inicio</a></li>
         <li><a href="<?= $patch ?>vehiculos">Vehiculos</a></li>
-        <li><a href="<?= $patch ?>mantenimientos/<?= $data['idVehiculo'] ?>">Mantenimientos</a></li>
+        <li><a href="<?= $patch ?>mantenimientos">Mantenimientos</a></li>
         <li class="active"><?= ($a->id == "" ? 'Nuevo' : 'Actualizar'); ?> Mantenimiento</li>
     </ol>
 </section>
 <br />
 
-<form id="form1" class="form" action="<?= $patch; ?>mantenimientos/save" method="post" name="form1" enctype="multipart/form-data">
+<form id="form1" class="form" action="<?= $patch; ?>mantenimientos/save" method="post" name="form1"
+    enctype="multipart/form-data">
     <div class="box ">
         <div class="box-body">
             <fieldset>
@@ -47,7 +48,8 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="date" class="form-control pull-right" value="<?= $a->fecha; ?>" id="fecha" name="fecha">
+                        <input type="date" class="form-control pull-right" value="<?= $a->fecha; ?>" id="fecha"
+                            name="fecha">
                     </div>
                 </div>
 
@@ -65,25 +67,56 @@
                 <div class="clearfix"></div>
                 <br />
 
+                <!--Placa-->
+                <div class="form-group col-xs-12 col-sm-3">
+                    <label for="vehiculoId"><strong>Placa*</strong></label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-location-arrow"></i>
+                        </div>
+                        <select class="form-control select2" id="vehiculoId" name="vehiculoId" class="select" required>
+                            <option value="">[Seleccione..]</option>
+                            <?php foreach ($data["vehiculos"] as $v) { ?>
+                            <option <?= ($v['id'] == $a->vehiculoId ? 'selected="selected"' : ''); ?> value="<?= $v['id']; ?>">
+                                <?= $v['placa']; ?></option>
+                            <?php } ?>
 
-                <div class="col-lg-4">
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3">
                     <label id="l_costoTotal">Costo Total</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-dollar"></i>
                         </div>
-                        <input type="number" class="form-control pull-right" value="<?= $a->costoTotal; ?>" id="costoTotal" name="costoTotal">
+                        <input type="number" class="form-control pull-right" value="<?= $a->costoTotal; ?>"
+                            id="costoTotal" name="costoTotal">
                     </div>
                 </div>
 
 
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <label id="l_archivoFactura">Copia Digital Factura</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-file"></i>
                         </div>
-                        <input name='archivoFactura' class='form-control doc' id="archivoFactura" type='file'>
+                        <input name='archivoFactura' class='form-control doc' id="archivoFactura" type='file' accept="image/*" onchange="return fileValidation1()">
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3">
+                    <label id="l_preoperacional">Preoperacional</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar-check-o"></i>
+                        </div>
+                        <input type="number" class="form-control pull-right" value="<?= $a->preoperacional; ?>"
+                            id="preoperacional" name="preoperacional">
                     </div>
                 </div>
 
@@ -93,7 +126,8 @@
 
                 <div class="col-lg-8">
                     <label id="l_descripcion">Descripcion</label>
-                    <textarea class="form-control" rows="3" id="descripcion" name="descripcion"><?= $a->descripcion; ?></textarea>
+                    <textarea class="form-control" rows="3" id="descripcion"
+                        name="descripcion"><?= $a->descripcion; ?></textarea>
                 </div>
 
                 <div class="clearfix"></div>
@@ -117,7 +151,7 @@
                         </span>
                         <select class=" select2" style="width: 100%;" id="id_actividad" name="id_actividad">
                             <?php foreach ($data["actividades"] as $c) { ?>
-                                <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
+                            <option value="<?= $c->id; ?>"><?= $c->nombre; ?></option>
                             <?php } ?>
                         </select>
 
@@ -179,7 +213,7 @@
                 <button type="button" id="btn-cancel" class="btn bg-grey btn-default">Cancelar</button>
                 <button type="button" id="btn-save" class="btn  bg-green pull-right">Guardar</button>
                 <input name="id" type="hidden" id="id" value="<?= $a->id; ?>" />
-                <input name="vehiculoId" type="hidden" id="vehiculoId" value="<?= $data['idVehiculo']  ?>" />
+
                 <input name="archivo" type="hidden" id="archivo" value="<?= $a->archivoFactura ?>" />
 
             </div>
@@ -195,80 +229,100 @@
 <script type="text/javascript" src="<?= $patch; ?>global/js/form.js"></script>
 
 <script type="text/javascript">
-    function validateForm() {
+function validateForm() {
 
-        var sErrMsg = "";
-        var flag = true;
+    var sErrMsg = "";
+    var flag = true;
 
-        sErrMsg += ($('#tipo').val() === "" ? '- Debe seleccionar un Tipo.\n' : '');
-        sErrMsg += validateText($('#fecha').val(), $('#l_fecha').html(), true);
-        sErrMsg += validateNumber($('#km').val(), $('#l_km').html(), true);
-        sErrMsg += validateText($('#descripcion').val(), $('#l_descripcion').html(), true);
-        sErrMsg += validateNumber($('#costoTotal').val(), $('#l_costoTotal').html(), true);
+    sErrMsg += ($('#tipo').val() === "" ? '- Debe seleccionar un Tipo.\n' : '');
+    sErrMsg += validateText($('#fecha').val(), $('#l_fecha').html(), true);
+    sErrMsg += validateNumber($('#km').val(), $('#l_km').html(), true);
+    sErrMsg += validateText($('#descripcion').val(), $('#l_descripcion').html(), true);
+    sErrMsg += validateNumber($('#costoTotal').val(), $('#l_costoTotal').html(), true);
 
 
-        if (sErrMsg !== "") {
-            alert(sErrMsg);
-            flag = false;
-        }
-
-        return flag;
-
+    if (sErrMsg !== "") {
+        alert(sErrMsg);
+        flag = false;
     }
 
-    // Cargar todos los conductores agregados en la grilla
-    function loadItems() {
-        $.post('<?= $patch; ?>mantenimientos/loadItem', {}, function(data) {
-            $('#items').html(data);
-        });
-    }
+    return flag;
 
-    $('#items').ready(loadItems);
+}
 
-
-    // Boton para agregar actividad
-    $('#btn-addActivity').click(function() {
-        AddItemE();
+// Cargar todos los conductores agregados en la grilla
+function loadItems() {
+    $.post('<?= $patch; ?>mantenimientos/loadItem', {}, function(data) {
+        $('#items').html(data);
     });
+}
 
-    // Agregar una nueva actividad a la grilla
-    function AddItemE() {
-        $("#form1").mask("Espere...");
-        $.post(
-            '<?= $patch; ?>mantenimientos/addItem', {
-                id: $('#id_actividad').val(),
-                anotacion: $('#anotaciones').val(),
-                costo: $('#costo').val()
-            },
-            function(data) {
-                $("#form1").unmask();
-                $('#items').html(data);
-                $('#anotaciones').val("");
-                $('#costo').val("");
-            }
-        );
-    }
+$('#items').ready(loadItems);
 
-    // Eliminar un conductor de la grilla
-    function delItem(i) {
-        $("#form1").mask("Espere...");
-        $.post('<?= $patch; ?>mantenimientos/deleteItem', {
-            index: i
-        }, function(data) {
+
+// Boton para agregar actividad
+$('#btn-addActivity').click(function() {
+    AddItemE();
+});
+
+// Agregar una nueva actividad a la grilla
+function AddItemE() {
+    $("#form1").mask("Espere...");
+    $.post(
+        '<?= $patch; ?>mantenimientos/addItem', {
+            id: $('#id_actividad').val(),
+            anotacion: $('#anotaciones').val(),
+            costo: $('#costo').val()
+        },
+        function(data) {
             $("#form1").unmask();
             $('#items').html(data);
-        });
+            $('#anotaciones').val("");
+            $('#costo').val("");
+        }
+    );
+}
+
+// Eliminar un conductor de la grilla
+function delItem(i) {
+    $("#form1").mask("Espere...");
+    $.post('<?= $patch; ?>mantenimientos/deleteItem', {
+        index: i
+    }, function(data) {
+        $("#form1").unmask();
+        $('#items').html(data);
+    });
+}
+
+$('#btn-save').click(function() {
+    if (validateForm()) {
+        $('#form1').submit();
+    }
+});
+
+$('#btn-cancel').click(function() {
+    $.post('<?= $patch; ?>vehiculos/clean', {}, function(data) {
+        window.location = '<?= $patch; ?>mantenimientos';
+    });
+});
+
+function fileValidation1() {
+    var fileInput =
+        document.getElementById('archivoFactura');
+    var list = fileInput.files;
+
+
+    // Allowing file type
+    var allowedExtensions =
+        /^image./i;
+
+    var fileType = list[0].type;
+    if (!allowedExtensions.exec(fileType)) {
+        alert('Solo se permiten imagenes.');
+        fileInput.value = '';
+        return false;
     }
 
-    $('#btn-save').click(function() {
-        if (validateForm()) {
-            $('#form1').submit();
-        }
-    });
+}
 
-    $('#btn-cancel').click(function() {
-        $.post('<?= $patch; ?>vehiculos/clean', {}, function(data) {
-            window.location = '<?= $patch; ?>mantenimientos/<?= $data['idVehiculo']; ?>';
-        });
-    });
 </script>

@@ -4,7 +4,7 @@
 
 <section class="content-header">
     <h1>
-        Lista de Mantenimientos de <?php echo $data['vehiculo']->placa; ?>
+        Lista de Mantenimientos 
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?= $patch ?>/vehiculos">Vehiculos</a></li>
@@ -22,6 +22,8 @@
                             <a href="<?= $patch; ?>mantenimientos/add/<?php echo $data['id'] ?>" id="btn-new" class="btn btn-default btn-md"><i class="fa fa-archive"></i><br /><span>Nuevo</span></a>
                             <a href="<?= $patch; ?>mantenimientos/edit" id="btn-edit" class="btn btn-default btn-md"><i class="fa fa-edit"></i><br /><span>Editar</span></a>
                             <a href="<?= $patch; ?>mantenimientos/finish" id="btn-finish" class="btn btn-default btn-md"><i class="fa fa-check-square-o"></i><br /><span>Finalizar</spa></a>
+                            <a href="<?= $patch; ?>mantenimientos/report" id="btn-report" target="_blank" class="btn btn-default btn-md"><i class="fa fa-file-pdf-o"></i><br /><span>Ver</span></a>
+                            <a href="<?= $patch; ?>mantenimientos/reportes" id="btn-reportes" target="_blank" class="btn btn-default btn-md"><i class="fa fa-print"></i><br /><span>Reportes</span></a>
                         </div><!-- /.btn-group -->
                     </div>
                     <div class="clearfix"></div>
@@ -31,7 +33,10 @@
                             <thead>
                                 <tr>
                                     <th>&nbsp;</th>
+                                    <th>Número</th>
+                                    <th>Placa</th>
                                     <th>Tipo</th>
+                                    <th>Descripción</th>
                                     <th>Prog. fecha</th>
                                     <th>Prog. Km</th>
                                     <th>Factura</th>
@@ -45,6 +50,8 @@
                                 ?>
                                     <tr>
                                         <td><input class="minimal" name="item" type="radio" value="<?= $r['id']; ?>" /></td>
+                                        <td><?= $r['id']; ?></td>
+                                        <td><?= $r['placa']; ?></td>
                                         <td><?php switch ($r['tipo']) {
                                                 case "PRE":
                                                     echo "Preventivo";
@@ -65,6 +72,7 @@
                                                     echo $r['tipo'];
                                                     break;
                                             } ?></td>
+                                        <td><?= $r['descripcion']; ?></td>
                                         <td><?= $r['fecha']; ?></td>
                                         <td><?= $r['km']; ?></td>
                                         <td><a target="_blank" href="<?php echo $data['rootUrl'] ?>documentacion/FacturasMantenimientos/<?php echo $r['archivoFactura'] != "" ? $r['archivoFactura'] : "NA.JPG" ?>">Ver</a></td>
@@ -76,8 +84,12 @@
                             <tfoot>
                                 <tr>
                                     <th>&nbsp;</th>
+                                    <th>Número</th>
+                                    <th>Placa</th>
                                     <th>Tipo</th>
-                                    <th>Programado</th>
+                                    <th>Descripción</th>
+                                    <th>Prog. fecha</th>
+                                    <th>Prog. Km</th>
                                     <th>Factura</th>
                                     <th>Fecha finalizacion</th>
                                     <th>Estado</th>
@@ -125,6 +137,21 @@
         } else {
             var action = $(this).attr("href") + "/" + item;
             $(this).attr("href", action);
+        }
+    });
+
+    $('#btn-report').click(function(e) {
+        item = $('input[name=item]:checked').attr('value');
+        if (!item) {
+            alert('Debe seleccionar un item');
+            e.preventDefault();
+        } else {
+            var old = $(this).attr("href");
+            var action = $(this).attr("href") + "/" + item;
+            $(this).attr("href", action);
+            setTimeout(() => {
+                $(this).attr("href", old);
+            }, 2000);
         }
     });
 
