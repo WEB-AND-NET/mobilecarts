@@ -63,9 +63,19 @@ class MantenimientoBase extends DooModel{
      */
     public $vehiculoId;
 
+    /**
+     * @var int Max length is 11.
+     */
+    public $preoperacional;
+
+    /**
+     * @var text
+     */
+    public $fotos;
+
     public $_table = 'mantenimiento';
     public $_primarykey = 'id';
-    public $_fields = array('id','tipo','fecha','km','costoTotal','archivoFactura','descripcion','estado','fechaCreacion','fechaUpdate','fechaCierre','vehiculoId');
+    public $_fields = array('id','tipo','fecha','km','costoTotal','archivoFactura','descripcion','estado','fechaCreacion','fechaUpdate','fechaCierre','vehiculoId','preoperacional','fotos');
 
     public function getVRules() {
         return array(
@@ -129,6 +139,16 @@ class MantenimientoBase extends DooModel{
                         array( 'integer' ),
                         array( 'maxlength', 11 ),
                         array( 'notnull' ),
+                ),
+
+                'preoperacional' => array(
+                        array( 'integer' ),
+                        array( 'maxlength', 11 ),
+                        array( 'optional' ),
+                ),
+
+                'fotos' => array(
+                        array( 'optional' ),
                 )
             );
     }

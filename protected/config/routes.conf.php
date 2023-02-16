@@ -361,8 +361,8 @@ $route['*']['/vehiculos/documents/:pindex'] = array('VehiculosController', 'docu
 *Mantenimientos
 *
 */
-$route['*']['/mantenimientos/:pindex'] = array('MantenimientosController', 'index');
-$route['*']['/mantenimientos/add/:pindex'] = array('MantenimientosController', 'add');
+$route['*']['/mantenimientos'] = array('MantenimientosController', 'index');
+$route['*']['/mantenimientos/add'] = array('MantenimientosController', 'add');
 $route['*']['/mantenimientos/edit/:pindex'] = array('MantenimientosController', 'edit');
 $route['*']['/mantenimientos/finish/:pindex'] = array('MantenimientosController', 'finish');
 $route['*']['/mantenimientos/save'] = array('MantenimientosController', 'save');
@@ -370,6 +370,12 @@ $route['*']['/mantenimientos/savefinish'] = array('MantenimientosController', 'S
 $route['*']['/mantenimientos/addItem'] = array('MantenimientosController', 'insert');
 $route['*']['/mantenimientos/deleteItem'] = array('MantenimientosController', 'delete');
 $route['*']['/mantenimientos/loadItem'] = array('MantenimientosController', 'load');
+$route['*']['/mantenimientos/vencimientos'] = array('MantenimientosController', 'vencimientos');
+$route['*']['/mantenimientos/report'] = array('MantenimientosController', 'report');
+$route['*']['/mantenimientos/report/:pindex'] = array('MantenimientosController', 'verPdf');
+$route['*']['/mantenimientos/reportes'] = array('MantenimientosController', 'reportes');
+$route['*']['/mantenimientos/reportes/diario'] = array('MantenimientosController', 'reporteDiario');
+
 
 
 

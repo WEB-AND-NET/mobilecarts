@@ -131,17 +131,6 @@
         }
     });
 
-    $('#btn-mtto').click(function(e) {
-        item = $('input[name=item]:checked').attr('value');
-        if (!item) {
-            alert('Debe seleccionar un item');
-            e.preventDefault();
-        } else {
-            var action = $(this).attr("href") + "/" + item;
-            $(this).attr("href", action);
-        }
-    });
-
     $('#btn-edit').click(function(e) {
         item = $('input[name=item]:checked').attr('value');
         if (!item) {

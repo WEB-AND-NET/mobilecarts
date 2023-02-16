@@ -19,6 +19,24 @@ $login = $_SESSION['login'];
             <ul class="nav navbar-nav">
             <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-tachometer"></i>
+                        <span id="push-mantenimientos-i" class="label label-danger"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li id="push-mantenimientos-h" class="header"></li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul id="push-mantenimientos" class="menu">
+                                <li></li>
+                            </ul>
+                        </li>
+                        <li id="footer-mantenimientos" class="header">
+                            <a href='<?php echo $patch ?>mantenimientos'>Ver todos los mantenimientos</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-car"></i>
                         <span id="push-checklist-i" class="label label-danger"></span>
                     </a>
@@ -119,13 +137,15 @@ $login = $_SESSION['login'];
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= $patch ?>global/img/users/<?= $login->imagen ?>" class="user-image" alt="User Image" />
+                        <img src="<?= $patch ?>global/img/users/<?= $login->imagen ?>" class="user-image"
+                            alt="User Image" />
                         <span class="hidden-xs"><?= $login->nombre ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= $patch ?>global/img/users/<?= $login->imagen ?>" class="img-circle" alt="User Image" />
+                            <img src="<?= $patch ?>global/img/users/<?= $login->imagen ?>" class="img-circle"
+                                alt="User Image" />
                             <p>
                                 <?= $login->nombre ?> - <?= $login->perfil ?>
                                 <!--<small>Member since Nov. 2012</small>-->
