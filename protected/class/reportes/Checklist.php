@@ -8,6 +8,7 @@
 class Checklist extends FPDF
 {
 
+    public $id="";
     public $placa = "";
     public $fecha = "";
     // Cabecera de página
@@ -25,8 +26,9 @@ class Checklist extends FPDF
 
         // Título
 
-        $this->Cell(129, 13, "CHECKLIST $this->fecha VEHICULO $this->placa ", 'LTR', 1, 'C');
-
+        $this->Cell(129, 1.5, '', 'LTR', 1, 'C');
+        $this->MultiCell(129, 5, "CHECKLIST #$this->id $this->fecha \nVEHICULO $this->placa ", 'LR', 'C');
+        $this->Cell(129, 1.5, '', 'LR', 1, 'C');
         $this->SetFont('Arial', 'B', 8);
 
         $this->Cell(129, 3, 'AGUAS & AGUAS & CIA LTDA', 'LR', 1, 'C');

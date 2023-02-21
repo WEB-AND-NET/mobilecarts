@@ -181,6 +181,7 @@ class ChecklistController extends DooController
         
 
         $pdf = new Checklist('P','mm','A4');
+        $pdf->id=$revision["id"];
         $pdf->placa=$revision["placa"];
         $pdf->fecha=$revision["fecha"];
         $pdf->AliasNbPages();
@@ -207,7 +208,7 @@ class ChecklistController extends DooController
 
         Doo::loadClass("reportes/ChecklistSemanal");       
 
-        $sql = "SELECT r.id, DAYOFWEEK(r.fecha), r.creacion, rsc.nombre, rd.estado, rd.observacion  FROM revision_diara r 
+        $sql = "SELECT r.id, DAYOFWEEK(r.fecha), r.creacion, rsc.nombre, rd.estado, rd.observacion FROM revision_diara r 
         LEFT JOIN revision_details rd ON rd.id_revision = r.id 
         LEFT JOIN revision_subcategoria rsc ON rsc.id = rd.id_subcategoria 
         WHERE r.id_vehiculo = $idVeh AND r.fecha BETWEEN '$fechaIni' AND '$fechaFin'";
@@ -224,10 +225,13 @@ class ChecklistController extends DooController
         $details = Doo::db()->query("SELECT rc.nombre AS categoria, rsc.nombre AS subcategoria FROM  revision_subcategoria rsc 
         LEFT JOIN revision_categoria rc ON rsc.id_categoria = rc.id")->fetchAll();
 
-        $placa = Doo::db()->query("SELECT v.placa FROM vehiculos v  WHERE v.id=$idVeh")->fetch();
+        $datos = Doo::db()->query("SELECT v.placa, v.modelo, v.marca, GROUP_CONCAT(DISTINCT CONCAT(c.nombre, ' ', c.apellidos) SEPARATOR', ') AS conductores, MIN(r.kilometraje) AS kmI, MAX(r.kilometraje) AS kmF  FROM revision_diara r 
+        LEFT JOIN vehiculos v  ON v.id = r.id_vehiculo 
+        LEFT JOIN conductores c ON c.id = r.id_conductor 
+        WHERE r.id_vehiculo=$idVeh AND r.fecha BETWEEN DATE_ADD('$fechaFin', INTERVAL -6 DAY) AND '$fechaFin'")->fetch();
 
         $pdf = new ChecklistSemanal('P','mm','A4');
-        $pdf->placa=$placa["placa"];
+        $pdf->placa=$datos["placa"];
         $pdf->fecha=$fechaIni . " a " .$fechaFin;
         $pdf->AliasNbPages();
 
@@ -236,7 +240,7 @@ class ChecklistController extends DooController
         $pdf->SetFont('Times','B',8);
 
         
-        $pdf->Body($details, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo);
+        $pdf->Body($datos, $details, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo);
 
 
         $pdf->Output();
