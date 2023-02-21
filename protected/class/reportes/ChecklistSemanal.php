@@ -50,8 +50,65 @@ class ChecklistSemanal extends FPDF
         $this->Ln(5);
     }
 
-    function Body($details, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo)
+    function Body($datos, $details, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo)
     {
+        $ancho = $this->w - 20;
+
+        $c2 = $ancho / 4;
+
+        $this->SetFillColor(191, 191, 191);
+        
+        
+        //fila1
+
+        $this->SetFont('Times','B',8);
+
+        $this->Cell($c2, 5, 'KM INICIAL', '1', 0, 'L', true);
+
+        $this->SetFont('Times','',8);
+
+        $this->Cell($c2, 5, $datos['kmI'], '1', 0, 'L');
+
+
+
+        $this->SetFont('Times','B',8);
+
+        $this->Cell($c2, 5, 'KM FINAL', '1', 0, 'L', true);
+
+        $this->SetFont('Times','',8);
+
+        $this->Cell($c2, 5, $datos['kmF'], '1', 1, 'L');
+
+        //fila2
+
+        $this->SetFont('Times','B',8);
+
+        $this->Cell($c2, 5, 'MARCA', 'LRB', 0, 'L', true);
+
+        $this->SetFont('Times','',8);
+
+        $this->Cell($c2, 5, $datos['marca'], 'LRB', 0, 'L');
+
+
+        $this->SetFont('Times','B',8);
+
+        $this->Cell($c2, 5, 'MODELO', 'LRB', 0, 'L', true);
+
+        $this->SetFont('Times','',8);
+
+        $this->Cell($c2, 5, $datos['modelo'], 'LRB', 1, 'L');
+
+
+        //---------------------------CONDCUTORES-----------------------------
+        $this->Ln(1);
+        $this->Cell(0, 5, 'CODUCTORES', 'LT b b b b b b b b b b b bR', 1, 'C', true);
+
+        $this->MultiCell(0, 7, $datos["conductores"], '1', 'J');
+
+        
+        $this->Ln(4);
+        
+
         $this->Cell(87, 5, "Elementos de operacion: ", '1', 0, 'C');
         $this->Cell(14, 5, "Lunes", '1', 0, 'C');
         $this->Cell(14, 5, "Martes", '1', 0, 'C');
@@ -64,7 +121,7 @@ class ChecklistSemanal extends FPDF
 
         $categoria = "";
 
-        $this->SetFillColor(191, 191, 191);
+        
         foreach ($details as $key) {
             if ($categoria != $key["categoria"]) {
                 $categoria = $key["categoria"];

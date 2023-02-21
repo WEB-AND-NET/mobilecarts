@@ -11,7 +11,7 @@
 </section>
 <br/>
 <div class="box ">
-    <form id="form1" class="form" action="<?= $patch; ?>checklist/reportsemanal" method="post" name="form1">
+    <form id="form1" class="form" action="<?= $patch; ?>checklist/reportsemanal" method="post" name="form1" target="_blank">
         <div class="box-body">
             <fieldset style="width:97%;">
                 
