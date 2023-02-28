@@ -52,7 +52,7 @@ class Checklist extends FPDF
         $this->Ln(5);
     }
 
-    function Body($revision, $details)
+    function Body($revision, $details, $firma)
     {
         $this->Cell(25, 9, "Conductor: ", '0', 0, 'L');
         $this->SetFont('Times', '', 11);
@@ -134,6 +134,15 @@ class Checklist extends FPDF
             $this->Line($x1+190, $y2-5,$x1+190, $y2);
             }
         }
+        $this->Ln(5);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(0, 5, "Firma:", "0", 1, 'L');
+        if($firma["foto"] != "")
+        {
+            $this->Image($firma["foto"],null,null,0,0,"PNG");
+            $this->Line($this->GetX(), $this->GetY(),100, $this->GetY());
+        }
+
     }
 
     function Footer()
