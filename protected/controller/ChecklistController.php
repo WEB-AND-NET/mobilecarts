@@ -117,6 +117,8 @@ class ChecklistController extends DooController
         $datos = $_POST;
         Doo::loadModel("RevisionDiara");
         Doo::loadModel("RevisionDetails");
+        Doo::loadModel("FirmasRevisiondiaria");
+
         $revisionDiara = new RevisionDiara($_POST);
         $login = $_SESSION['login'];
         $fecha = date_create("$revisionDiara->venc_extintor");
@@ -132,7 +134,10 @@ class ChecklistController extends DooController
         }
         $idRevision = Doo::db()->Insert($revisionDiara);
 
-
+        $firma= new FirmasRevisiondiaria();
+        $firma->foto=  $_POST["base64eco"];
+        $firma->revisionId = $idRevision;
+        Doo::db()->Insert($firma);
 
         for ($i = 1; $i < 45; $i++) {
             $details = new RevisionDetails();
@@ -178,6 +183,7 @@ class ChecklistController extends DooController
         LEFT JOIN revision_categoria rc ON rsc.id_categoria = rc.id
         WHERE rd.id_revision = $id ")->fetchAll();
 
+        $firma = Doo::db()->query("SELECT foto FROM firmas_revisiondiaria WHERE revisionId = $id")->fetch();
         
 
         $pdf = new Checklist('P','mm','A4');
@@ -191,7 +197,7 @@ class ChecklistController extends DooController
         $pdf->SetFont('Times','B',11);
 
         
-        $pdf->Body($revision,$details);
+        $pdf->Body($revision,$details,$firma);
 
 
         $pdf->Output();
